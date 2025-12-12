@@ -58,7 +58,7 @@
                                 <a href="{% url 'post:upvote_post' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_upvote" alt=""></a>{{post.upvotes}} 
                             {% endif %}
 
-                            <img class="ms-2 eye" alt="">{{ post.post_views }} 
+                            <img class="ms-2 eye" alt=""><span id="views_counter_{{ post.id }}">{{ post.post_views }}</span>  
 
                             {% if post.user == request.user %}
                                 <div class="ms-auto">
@@ -145,6 +145,7 @@
         </div>
     </div>
 
+    <script src="{% static 'js/views_index.js' %}"></script>
 
 <script>/*
     document.querySelectorAll('.cloud_container').forEach(function(container) {

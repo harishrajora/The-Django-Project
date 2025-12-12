@@ -121,9 +121,22 @@ def post_detail(request, id):
 def post_detail_views(request,id):
     post = get_object_or_404(Post, id = id)
 
-    post_views = Post.objects.filter(id=post.id).update(post_views=F("post_views"))
+    data = {"post_views":post.post_views}
+    return JsonResponse(data)
 
-    data = {"post_views":post_views}
+def post_index_views(request):
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 9)  # 9 posts per page
+
+    page = request.GET.get("page")
+    page_obj = paginator.get_page(page)
+    # Build a dict of {post_id: post_views}
+    data = {
+        "posts": [
+            {"id": post.id, "views": post.post_views}
+            for post in page_obj.object_list
+        ]
+    }
     return JsonResponse(data)
 
 def post_create(request):
