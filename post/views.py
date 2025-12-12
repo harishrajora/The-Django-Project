@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, Http404
+from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, Http404,HttpResponse
 from django.urls import reverse
 from .models import Post, UserUpvote, ContactInfo
 from django.contrib.auth.models import User
@@ -17,6 +17,12 @@ def contact_us(request):
 def about_us(request):
     return render(request, "info/about.html")
 
+def post_detail_upvotes(request,id):
+    post = get_object_or_404(Post, id = id)
+
+    data = {"post_upvotes":post.upvotes}
+    return JsonResponse(data)
+
 def upvote_post(request, id):
     #posts = Post.objects.get(id=id)
     post = get_object_or_404(Post, id = id)
@@ -33,8 +39,9 @@ def upvote_post(request, id):
         UserUpvote.objects.create(user = request.user,post=post)
         Post.objects.filter(id=post.id).update(upvotes=F("upvotes") + 1)
 
-    page = request.GET.get("page", 1)
-    return redirect(f"{reverse('post:index')}?page={page}")
+    #page = request.GET.get("page", 1)
+    #return redirect(f"{reverse('post:index')}?page={page}")
+    return HttpResponse(status=204)
 
 def upvote_post_detail(request, id):
     
@@ -52,7 +59,8 @@ def upvote_post_detail(request, id):
         UserUpvote.objects.create(user = request.user,post=post)
         Post.objects.filter(id=post.id).update(upvotes=F("upvotes") + 1)
 
-    return redirect(post.get_absolute_url())
+    #return redirect(post.get_absolute_url())
+    return HttpResponse(status=204)
 
 def post_index(request):
     if request.user.is_authenticated:

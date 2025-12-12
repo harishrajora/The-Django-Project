@@ -12,7 +12,7 @@ function update_views_index() {
         })
     },
     failure: function(data) { 
-        alert('Unable to get index view');
+        alert('Unable to get index views');
     }
 }); 
 }

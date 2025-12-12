@@ -36,9 +36,9 @@
                             {% if request.user.is_authenticated %}
 
                                 {% if post.id in upvoted_posts %}
-                                    <a href="{% url 'post:upvote_post' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_fill_upvote" alt=""></a>{{post.upvotes}} 
+                                    <a href="{% url 'post:upvote_post_detail' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_fill_upvote" alt=""></a><span id="upvotes_counter">{{post.upvotes}}</span> 
                                 {% else %}
-                                    <a href="{% url 'post:upvote_post' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_upvote" alt=""></a>{{post.upvotes}} 
+                                    <a href="{% url 'post:upvote_post_detail' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_upvote" alt=""></a><span id="upvotes_counter">{{post.upvotes}}</span> 
                                 {% endif %}
 
                                 <img class="ms-2 eye" alt=""><span id="views_counter">{{ post.post_views }}</span>  
@@ -101,5 +101,6 @@
             </div>
         </div>  
         
-        <script src="{% static 'js/views_detail.js' %}"></script>
+        <script src="{% static 'js/post/views_detail.js' %}"></script>
+        <script src="{% static 'js/post/upvotes_detail.js' %}"></script>
 {% endblock %}
