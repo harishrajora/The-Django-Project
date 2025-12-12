@@ -6,6 +6,7 @@ from .forms import PostForm, CommentForm, ContactusForm
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models import F
+from django.http import JsonResponse
 
 from django.core.paginator import Paginator
 #from django.utils.text import slugify
@@ -116,6 +117,14 @@ def post_detail(request, id):
     }
     
     return render(request, "post_templates/detail.html", context)
+
+def post_detail_views(request,id):
+    post = get_object_or_404(Post, id = id)
+
+    post_views = Post.objects.filter(id=post.id).update(post_views=F("post_views"))
+
+    data = {"post_views":post_views}
+    return JsonResponse(data)
 
 def post_create(request):
 
