@@ -17,12 +17,6 @@ def contact_us(request):
 def about_us(request):
     return render(request, "info/about.html")
 
-def post_detail_upvotes(request,id):
-    post = get_object_or_404(Post, id = id)
-
-    data = {"post_upvotes":post.upvotes}
-    return JsonResponse(data)
-
 def upvote_post(request, id):
     #posts = Post.objects.get(id=id)
     post = get_object_or_404(Post, id = id)
@@ -103,8 +97,9 @@ def post_detail(request, id):
 
     post_ids = post_list.values_list('id', flat=True)
 
-    upvoted_qs = UserUpvote.objects.filter(user=request.user, post_id__in=post_ids)
-    upvoted_posts = set(upvoted_qs.values_list('post_id', flat=True))
+    upvoted = False
+    if request.user.is_authenticated:
+        upvoted = UserUpvote.objects.filter(user=request.user, post=post).exists()
 
     post_views = Post.objects.filter(id=post.id).update(post_views=F("post_views") + 1)
 
@@ -120,25 +115,51 @@ def post_detail(request, id):
     context = {
         "post" : post,
         "form" : form,
-        "upvoted_posts" : upvoted_posts,
+        "upvoted_posts" : upvoted,
         "post_views": post_views,
     }
     
     return render(request, "post_templates/detail.html", context)
 
-def post_detail_views(request,id):
+# AJax Functions for realtime updating
+
+def post_detail_upvotes_ajax(request,id):
     post = get_object_or_404(Post, id = id)
 
-    data = {"post_views":post.post_views}
+    upvoted = False
+    if request.user.is_authenticated:
+        upvoted = UserUpvote.objects.filter(user=request.user, post=post).exists()
+    
+    data = {"upvotes" : post.upvotes,
+            "upvoted" : upvoted,}
     return JsonResponse(data)
 
-def post_index_views(request):
+def post_index_upvotes_ajax(request,id):
     post_list = Post.objects.all()
     paginator = Paginator(post_list, 9)  # 9 posts per page
 
     page = request.GET.get("page")
     page_obj = paginator.get_page(page)
-    # Build a dict of {post_id: post_views}
+    data = {
+        "posts": [
+            {"id": post.id, "upvotes": post.upvotes}
+            for post in page_obj.object_list
+        ]
+    }
+    return JsonResponse(data)
+
+def post_detail_views_ajax(request,id):
+    post = get_object_or_404(Post, id = id)
+
+    data = {"post_views":post.post_views}
+    return JsonResponse(data)
+
+def post_index_views_ajax(request):
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 9)  # 9 posts per page
+
+    page = request.GET.get("page")
+    page_obj = paginator.get_page(page)
     data = {
         "posts": [
             {"id": post.id, "views": post.post_views}

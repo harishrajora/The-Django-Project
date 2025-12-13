@@ -12,4 +12,4 @@ function update_views_detail() {
 }); 
 }
 
-setInterval(update_views_detail,1000);
+setInterval(update_views_detail,5000);

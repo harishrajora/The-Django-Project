@@ -8,12 +8,15 @@ urlpatterns = [
     path("contact/", views.contact_us, name = "contact"),
 
     path("index/", views.post_index, name = "index"),
-    #path("index/upvotes/", views.post_index_upvotes, name = "index_upvotes"),
-    path("index/views/", views.post_index_views, name = "index_views"),
-    re_path(r'^(?P<id>\d+)/upvotes/$', views.post_detail_upvotes, name = "get_post_upvotes"), 
-    re_path(r'^(?P<id>\d+)/views/$', views.post_detail_views, name = "get_post_view"), 
     re_path(r'^(?P<id>\d+)/$', views.post_detail, name = "detail"), 
     # r'^(?P<id>\d+)/$' doesnt work with path
+
+    # Ajax real time update functions
+    path("index/upvotes/", views.post_index_upvotes_ajax, name = "index_upvotes"),
+    path("index/views/", views.post_index_views_ajax, name = "index_views"),
+    re_path(r'^(?P<id>\d+)/upvotes/$', views.post_detail_upvotes_ajax, name = "get_post_upvotes"), 
+    re_path(r'^(?P<id>\d+)/views/$', views.post_detail_views_ajax, name = "get_post_view"), 
+
 
     path("create/", views.post_create, name = "create"),
     re_path(r'^(?P<id>\d+)/update/$', views.post_update, name = "update"),
