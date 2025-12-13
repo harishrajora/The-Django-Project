@@ -52,11 +52,7 @@
                         
                         {% if request.user.is_authenticated %}
 
-                            {% if post.id in upvoted_posts %}
-                                <a href="{% url 'post:upvote_post' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_fill_upvote" alt=""></a>{{post.upvotes}} 
-                            {% else %}
-                                <a href="{% url 'post:upvote_post' post.id %}?page={{ posts.number }}" role="button"><img class="scale-hover arrow_upvote" alt=""></a>{{post.upvotes}} 
-                            {% endif %}
+                            <a class="upvote-btn" data-id="{{ post.id }}" href="{% url 'post:upvote_post' post.id %}?page={{ posts.number }}" role="button"><img id="upvote-icon-{{ post.id }}" class="scale-hover arrow_upvote" alt=""></a><span id="upvotes_counter_{{ post.id }}">{{post.upvotes}}</span> 
 
                             <img class="ms-2 eye" alt=""><span id="views_counter_{{ post.id }}">{{ post.post_views }}</span>  
 

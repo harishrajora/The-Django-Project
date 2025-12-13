@@ -134,18 +134,26 @@ def post_detail_upvotes_ajax(request,id):
             "upvoted" : upvoted,}
     return JsonResponse(data)
 
-def post_index_upvotes_ajax(request,id):
+def post_index_upvotes_ajax(request):
     post_list = Post.objects.all()
-    paginator = Paginator(post_list, 9)  # 9 posts per page
+    paginator = Paginator(post_list, 9)  # Show 9 posts per page.
+    
+    post_ids = post_list.values_list('id', flat=True)
+
+    upvoted_qs = UserUpvote.objects.filter(user=request.user, post_id__in=post_ids)
+    upvoted_posts = set(upvoted_qs.values_list('post_id', flat=True))
 
     page = request.GET.get("page")
     page_obj = paginator.get_page(page)
     data = {
         "posts": [
-            {"id": post.id, "upvotes": post.upvotes}
+                {"id": post.id, 
+                "upvotes": post.upvotes,
+                "upvoted": post.id in upvoted_posts}
             for post in page_obj.object_list
         ]
     }
+
     return JsonResponse(data)
 
 def post_detail_views_ajax(request,id):

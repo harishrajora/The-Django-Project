@@ -13,10 +13,9 @@ function update_upvote_detail() {
             upvote_icon.removeClass('arrow_upvote').addClass('arrow_fill_upvote');
         } else {
             upvote_icon.removeClass('arrow_fill_upvote').addClass('arrow_upvote');
-
         }
     },
-    failure: function(data) { 
+    error: function(data) { 
         alert('Unable to get detail upvotes');
     }
 }); 
