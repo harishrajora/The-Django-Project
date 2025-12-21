@@ -1,22 +1,22 @@
 const root = document.documentElement;
 
-document.getElementById("theme-toggle").addEventListener("click", () => {
-const current = root.getAttribute("data-theme");
+const theme = localStorage.getItem("theme");
 
-    // Toggle between light and dark
-    const newTheme = current === "dark" ? "light" : "dark";
-    root.setAttribute("data-theme", newTheme);
-
-    // Optionally save user preference
-    localStorage.setItem("theme", newTheme);
-});
-
-// Load saved preference on page load
-const saved = localStorage.getItem("theme");
-
-if (saved) {
-    root.setAttribute("data-theme", saved);
+if (theme) {
+    root.setAttribute("data-theme", theme);
 } else {
     const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-    root.setAttribute("data-theme", prefersDark ? "dark" : "light");
+    const systemtheme = prefersDark ? "dark" : "light";
+
+    // apply
+    root.setAttribute("data-theme", systemtheme);
+    // save
+    localStorage.setItem("theme", systemtheme);
 }
+
+document.getElementById("theme-toggle").addEventListener("click", () => {
+    const current = root.getAttribute("data-theme");
+    const newtheme = current === "dark" ? "light" : "dark";
+    root.setAttribute("data-theme", newtheme);
+    localStorage.setItem("theme", newtheme);
+});
