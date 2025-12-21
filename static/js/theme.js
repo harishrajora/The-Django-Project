@@ -1,4 +1,3 @@
-
 const root = document.documentElement;
 
 document.getElementById("theme-toggle").addEventListener("click", () => {
@@ -14,4 +13,10 @@ const current = root.getAttribute("data-theme");
 
 // Load saved preference on page load
 const saved = localStorage.getItem("theme");
-if (saved) root.setAttribute("data-theme", saved);
+
+if (saved) {
+    root.setAttribute("data-theme", saved);
+} else {
+    const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+    root.setAttribute("data-theme", prefersDark ? "dark" : "light");
+}
