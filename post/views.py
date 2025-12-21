@@ -210,7 +210,7 @@ class PostActions():
         else:
             raise Http404("cant delete wrong user")
         
-    def post_update(request, id):
+    def post_update(self, request, id):
 
         authenticate_users(request)
 
