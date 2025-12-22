@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 
+{% load static %}
 {% block body %}
 <div class="container-fluid">
     <div class="row">
@@ -69,8 +70,8 @@
             <div class="sticky-top" style="top: 20px;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Live Preview</h2>
-                    <button type="button" class="btn btn-outline-primary" onclick="updatePreview()">
-                        <i class="bi bi-arrow-clockwise me-2"></i>Refresh Preview
+                    <button type="button" class="btn btn-yellow button_shadow" onclick="updatePreview()">
+                        <img src="{% static 'img/post/create/refresh_light.svg'%}" alt="Refresh">
                     </button>
                 </div>
                 

@@ -283,6 +283,27 @@ nav {
     box-shadow: 2px 2px 5px var(--shadow-color-04);
 }
 
+.btn-yellow{
+    color: white;
+    background-color: rgb(255, 186, 36);
+    border-color: orange;
+    transition: all 100ms ease-out;
+    transform: scale(1.00);
+}
+
+.btn-yellow:hover{
+    color: white;
+    background-color: rgb(243, 171, 17);
+    border-color: rgb(255, 173, 21);
+    transition: all 100ms ease-out;
+    transform: scale(1.03);
+}
+
+.btn-yellow:active{
+    background-color: rgb(243, 144, 46) !important;
+    border-color: rgb(255, 138, 21) !important;
+}
+
 .btn-primary{
     color: var(--text-color);
     background-color: var(--button-primary-color);
