@@ -243,18 +243,37 @@ def post_create(request):
 #    else:
 #        form = postForm()
 
-    form = PostForm(request.POST or None, request.FILES or None)
+    if request.method == "POST":
+            # Manually extract data from POST request
+            title = request.POST.get('title')
+            desc = request.POST.get('desc')
+            user_html = request.POST.get('user_html')
+            user_css = request.POST.get('user_css')
+            user_js = request.POST.get('user_js')
+            site_preview = request.POST.get('site_preview')
+            
+            # Get files
+            image = request.FILES.get('image')
+            video = request.FILES.get('video')
+            
+            # Create post manually
+            if title:  # Add your validation logic
+                post = Post(
+                    user=request.user,
+                    title=title,
+                    desc=desc,
+                    user_html=user_html,
+                    user_css=user_css,
+                    user_js=user_js,
+                    site_preview=site_preview,
+                    image=image,
+                    video=video
+                )
+                post.save()
+                return HttpResponseRedirect(post.get_absolute_url())
     
-    if form.is_valid():
-        updated_post = form.save(commit=False)
-        updated_post.user = request.user
-        updated_post.save()
-        return HttpResponseRedirect(updated_post.get_absolute_url())
-
+    # For GET request, just render the template
     context = {
-        "title" : "Create Post",
-        "form" : form
+        "title": "Create Post",
     }
-
-    return render(request, "post_templates/form.html", context)
-
+    return render(request, "post_templates/create.html", context)

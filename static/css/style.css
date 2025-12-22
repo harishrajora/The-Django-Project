@@ -97,6 +97,17 @@
 }
 */
 
+input::placeholder {
+    color: var(--text-color-faded) !important;
+}
+
+/* Target all textarea placeholders */
+textarea::placeholder {
+    color: var(--text-color-faded) !important;
+}
+
+
+
 body {
     color: var(--text-color);
     background-color: var(--bg-color);
