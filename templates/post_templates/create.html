@@ -31,20 +31,22 @@
                 <!-- File Uploads -->
                 <div class="row g-0 mb-2">
                     <div class="col-md-6">
-                        <div class="card" style="margin-left: 0 !important;">
+                        <div class="btn btn-primary py-1 mt-3 m-1 button_shadow">
+                            <a href="{{ post.get_absolute_url }}"><span class="div_link"></span></a> <!-- Add Image -->
                             <div class="card-body">
                                 <label class="form-label fw-bold text_color">Add Image</label>
                                 <br>
-                                <small class="text_fadded">Supported - JPG, PNG, GIF</small>
+                                <small class="text_fadded">Supported - png, jpg, jpeg, svg, webp</small>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6">
-                        <div class="card" style="margin-right: 0 !important;">
+                        <div class="btn btn-primary py-1 mt-3 m-1 button_shadow">
+                            <a href="{{ post.get_absolute_url }}"><span class="div_link"></span></a> <!-- Add Video -->
                             <div class="card-body">
                                 <label class="form-label fw-bold text_color">Add Video</label>
                                 <br>
-                                <small class="text_fadded">Supported - MP4, WebM</small>
+                                <small class="text_fadded">Supported - MOV, avi, mp4, webm, mkv</small>
                             </div>
                         </div>
                     </div>

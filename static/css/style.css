@@ -329,10 +329,6 @@ nav {
     border-color: var(--button-border-color-hover) !important; 
 }
 
-.card{
-    max-width: 100%;
-}
-
 .card-header{
     background-color: var(--bg-secondary-color);
     border-bottom: var(--bs-card-border-width) solid var(--bg-border-color);
