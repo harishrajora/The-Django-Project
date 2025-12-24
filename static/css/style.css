@@ -474,6 +474,22 @@ body{
 .flag{
     content: var(--flag);
 }
+/* Post Create */
+.file_upload{
+    content: var(--file-upload);
+}
+.css_logo{
+    content: var(--css-logo);
+}
+
+.js_logo{
+    content: var(--js-logo);
+}
+
+.html_logo{
+    content: var(--html-logo);
+}
+
 
 .flag_fill{
     content: var(--flag-fill);
