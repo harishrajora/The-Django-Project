@@ -247,10 +247,15 @@ def post_create(request):
             # Manually extract data from POST request
             title = request.POST.get('title')
             desc = request.POST.get('desc')
+
+            image = request.POST.get('image')
+            video = request.POST.get('video')
+            site_preview = request.POST.get('site_preview')
+            
             user_html = request.POST.get('user_html')
             user_css = request.POST.get('user_css')
             user_js = request.POST.get('user_js')
-            site_preview = request.POST.get('site_preview')
+
             
             # Get files
             image = request.FILES.get('image')
@@ -258,22 +263,50 @@ def post_create(request):
             
             # Create post manually
             if title:  # Add your validation logic
-                post = Post(
-                    user=request.user,
-                    title=title,
-                    desc=desc,
-                    user_html=user_html,
-                    user_css=user_css,
-                    user_js=user_js,
-                    site_preview=site_preview,
-                    image=image,
-                    video=video
-                )
-                post.save()
-                return HttpResponseRedirect(post.get_absolute_url())
+                if desc:
+                    post = Post(
+                        user=request.user,
+                        title=title,
+                        desc=desc,
+
+                        image=image,
+                        video=video,
+                        site_preview=site_preview,
+
+                        user_html=user_html,
+                        user_css=user_css,
+                        user_js=user_js,
+                    )
+                    post.save()
+                    return HttpResponseRedirect(post.get_absolute_url())
+                
     
     # For GET request, just render the template
     context = {
         "title": "Create Post",
     }
     return render(request, "post_templates/create.html", context)
+
+def post_create_preview(request):
+    if request.method == "POST":
+        # Manually extract data from POST request
+        title = request.POST.get('title')
+        desc = request.POST.get('desc')
+
+        image = request.POST.get('image')
+        video = request.POST.get('video')
+        site_preview = request.POST.get('site_preview')
+        
+        user_html = request.POST.get('user_html')
+        user_css = request.POST.get('user_css')
+        user_js = request.POST.get('user_js')
+        site_preview = request.POST.get('site_preview')
+
+        context = {
+            "title" : title,
+            "desc" : desc,
+        }
+
+        return render(request, "post_templates/post_design_preview.html",context)
+    else:
+        raise Http404
