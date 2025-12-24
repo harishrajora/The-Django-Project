@@ -152,12 +152,7 @@
 <!-- JavaScript for Live Preview -->
 <script>
     // Character counters
-    document.querySelectorAll('textarea[name="user_html"], textarea[name="user_css"], textarea[name="user_js"]').forEach(textarea => {
-        textarea.addEventListener('input', function() {
-            const counterId = this.name.replace('user_', '') + 'Counter';
-            document.getElementById(counterId).textContent = this.value.length;
-        });
-    });
+
     
     // Preview size toggles
     document.querySelectorAll('[data-preview]').forEach(button => {
@@ -180,9 +175,6 @@
     
     // Live preview update
     function updatePreview() {
-        const html = document.querySelector('textarea[name="user_html"]').value;
-        const css = document.querySelector('textarea[name="user_css"]').value;
-        const js = document.querySelector('textarea[name="user_js"]').value;
         
         const previewFrame = document.getElementById('previewFrame');
         
@@ -221,25 +213,6 @@
         textarea.addEventListener('input', function() {
             clearTimeout(previewTimeout);
             previewTimeout = setTimeout(updatePreview, 1000);
-        });
-    });
-    
-    // Form validation
-    document.getElementById('postForm').addEventListener('submit', function(e) {
-        const title = this.querySelector('input[name="title"]').value.trim();
-        
-        if (!title) {
-            e.preventDefault();
-            alert('Please enter a title');
-            this.querySelector('input[name="title"]').focus();
-        }
-    });
-    
-    // Initialize counters
-    document.addEventListener('DOMContentLoaded', function() {
-        document.querySelectorAll('textarea[name="user_html"], textarea[name="user_css"], textarea[name="user_js"]').forEach(textarea => {
-            const counterId = textarea.name.replace('user_', '') + 'Counter';
-            document.getElementById(counterId).textContent = textarea.value.length;
         });
     });
 </script>
