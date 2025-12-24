@@ -34,7 +34,7 @@
                     <label class="form-label fw-bold">File Uploads</label> <img class="file_upload" alt="">
                     <div class="row g-0 mb-2">
                         <div class="col-md-6">
-                            <div class="btn btn-primary py-1 mt-3 m-1 button_shadow" style="height: 85%; width: 99%;"> 
+                            <div class="btn btn-primary py-1 mt-3 button_shadow" style="height: 85%; width: 97%;"> 
                                 <a href="{{ post.get_absolute_url }}"><span class="div_link" id="uploadImg"></span></a> <!-- Add Image -->
                                 <input type="file" name="file" id="fileImg" style="display: none;">
                                 <div class="card-body">
@@ -48,7 +48,7 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="btn btn-primary py-1 mt-3 m-1 button_shadow" style="height: 85%; width: 99%;">
+                            <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
                                 <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadVideo"></span></a> <!-- Add Video -->
                                 <input type="file" name="file" id="fileVideo" style="display: none;">
                                 <div class="card-body">
@@ -62,9 +62,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="btn btn-primary py-1 mt-3 m-1 button_shadow" style="height: 85%; width: 99%;">
-                                <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadVideo"></span></a> <!-- Add Html -->
-                                <input type="file" name="file" id="fileVideo" style="display: none;">
+                            <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 97%;">
+                                <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadHtml"></span></a> <!-- Add Html -->
+                                <input type="file" name="file" id="fileHtml" style="display: none;">
                                 <div class="card-body">
                                     <img class="html_logo" alt="" height="50"> <img class="file_upload" alt="">
                                     <br>
@@ -74,9 +74,9 @@
                             </div>
                         </div>
                         <div class="col-md-6">
-                            <div class="btn btn-primary py-1 mt-3 m-1 button_shadow" style="height: 85%; width: 99%;">
-                                <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadVideo"></span></a> <!-- Add Css -->
-                                <input type="file" name="file" id="fileVideo" style="display: none;">
+                            <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
+                                <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadCss"></span></a> <!-- Add Css -->
+                                <input type="file" name="file" id="fileCss" style="display: none;">
                                 <div class="card-body">
                                     <img class="css_logo" alt="" height="50"><img class="file_upload" alt="">
                                     <br>
@@ -86,9 +86,9 @@
                             </div>
                         </div>
                         <div class="col-md-6 w-100">
-                            <div class="btn btn-primary py-1 mt-3 m-1 button_shadow" style="height: 85%; width: 99%;">
-                                <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadVideo"></span></a> <!-- Add Js -->
-                                <input type="file" name="file" id="fileVideo" style="display: none;">
+                            <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
+                                <a href="{{ post.get_absolute_url }}"><span class="div_link"  id="uploadJs"></span></a> <!-- Add Js -->
+                                <input type="file" name="file" id="fileJs" style="display: none;">
                                 <div class="card-body">
                                     <img class="js_logo" alt="" height="50"><img class="file_upload" alt="">
                                     <br>
@@ -255,14 +255,35 @@
     const fileImg = document.getElementById('fileImg'); // input
     const uploadVideo = document.getElementById('uploadVideo');
     const fileVideo = document.getElementById('fileVideo'); // input
+
+    // File uploads
+    const uploadHtml = document.getElementById('uploadHtml');
+    const fileHtml = document.getElementById('fileHtml');
+    const uploadCss = document.getElementById('uploadCss');
+    const fileCss = document.getElementById('fileCss');
+    const uploadJs = document.getElementById('uploadJs');
+    const fileJs = document.getElementById('fileJs'); 
+
     uploadImg.addEventListener('click', function(){
         fileImg.click();
     });
 
     uploadVideo.addEventListener('click', function(){
-        fileImg.click();
+        fileVideo.click();
     });
+    
 
+    uploadHtml.addEventListener('click', function(){
+        fileHtml.click();
+    });
+    uploadCss.addEventListener('click', function(){
+        fileCss.click();
+    });
+    uploadJs.addEventListener('click', function(){
+        fileJs.click();
+    });
+    
+    
     // Preview size toggles
     document.querySelectorAll('[data-preview]').forEach(button => {
         button.addEventListener('click', function() {
