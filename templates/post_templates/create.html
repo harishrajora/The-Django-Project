@@ -31,14 +31,14 @@
                 
                 <!-- File Uploads -->
                 <div class="mb-2">
-                    <label class="form-label fw-bold">File Uploads</label> <img class="file_upload" alt="">
+                    <label class="form-label fw-bold">File Uploads</label> <img class="image_file_upload" alt=""> <img class="file_upload" alt="">
                     <div class="row g-0 mb-2">
                         <div class="col-md-6">
                             <div class="btn btn-primary py-1 mt-3 button_shadow" style="height: 85%; width: 97%;"> 
                                 <a href=""><span class="div_link" id="uploadImg"></span></a> <!-- Add Image -->
                                 <input type="file" name="image" id="fileImg" style="display: none;">
                                 <div class="card-body">
-                                    <label class="form-label fw-bold text_color">Image</label> <img class="file_upload" alt="">
+                                    <label class="form-label fw-bold text_color">Image</label> <img class="image_file_upload" alt="">
                                     <br>
                                     <div class="card-body d-md-none">
                                         <small class="text_fadded">Supported - png, jpg, jpeg, webp</small>
@@ -54,13 +54,25 @@
                                 <a href=""><span class="div_link"  id="uploadVideo"></span></a> <!-- Add Video -->
                                 <input type="file" name="video" id="fileVideo" style="display: none;">
                                 <div class="card-body">
-                                    <label class="form-label fw-bold text_color">Video</label> <img class="file_upload" alt="">
+                                    <label class="form-label fw-bold text_color">Video</label> <img class="image_file_upload" alt="">
                                     <br>
                                     <div class="card-body d-md-none">
                                         <small class="text_fadded">Supported - MOV, avi, mp4, webm, mkv</small>
                                     </div>
                                     <br>
                                     <small class="text_fadded" id="filename_video"> None |</small>
+                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 w-100">
+                            <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
+                                <a href=""><span class="div_link"  id="uploadSitePreview"></span></a> <!-- Add site preview -->
+                                <input type="file" name="site_preview" id="fileSitePreview" style="display: none;">
+                                <div class="card-body">
+                                    <label class="form-label fw-bold text_color">Site Preview </label> <img class="image_file_upload" alt="">
+                                    <br>
+                                    <small class="text_fadded" id="filename_site_preview"> None |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -95,18 +107,6 @@
                                 <input type="file" name="user_js" id="fileJs" style="display: none;">
                                 <div class="card-body">
                                     <img class="js_logo" alt="" height="50"><img class="file_upload" alt="">
-                                    <br>
-                                    <small class="text_fadded" id="filename_js"> None |</small>
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6 w-100">
-                            <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
-                                <a href=""><span class="div_link"  id="uploadJs"></span></a> <!-- Add Js -->
-                                <input type="file" name="user_js" id="fileJs" style="display: none;">
-                                <div class="card-body">
-                                    <label class="form-label fw-bold text_color">Site Preview </label> <img class="file_upload" alt="">
                                     <br>
                                     <small class="text_fadded" id="filename_js"> None |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
@@ -272,6 +272,9 @@
     const uploadVideo = document.getElementById('uploadVideo');
     const fileVideo = document.getElementById('fileVideo'); // input
 
+    const uploadSitePreview = document.getElementById('uploadSitePreview');
+    const fileSitePreview = document.getElementById('fileSitePreview'); // input
+
     // File uploads
     const uploadHtml = document.getElementById('uploadHtml');
     const fileHtml = document.getElementById('fileHtml');
@@ -289,6 +292,8 @@
 
     uploadImg.addEventListener('click', triggerFileInput(fileImg));
     uploadVideo.addEventListener('click', triggerFileInput(fileVideo));
+    uploadSitePreview.addEventListener('click', triggerFileInput(fileSitePreview));
+
     uploadHtml.addEventListener('click', triggerFileInput(fileHtml));
     uploadCss.addEventListener('click', triggerFileInput(fileCss));
     uploadJs.addEventListener('click', triggerFileInput(fileJs));
@@ -302,12 +307,16 @@
     }
     const filename_img = document.getElementById('filename_img');
     const filename_video = document.getElementById('filename_video');
+    const filename_site_preview = document.getElementById('filename_site_preview');
+
     const filename_html = document.getElementById('filename_html');
     const filename_css = document.getElementById('filename_css');
     const filename_js = document.getElementById('filename_js');
 
     fileImg.addEventListener('change', apply_file_name(filename_img))
     fileVideo.addEventListener('change', apply_file_name(filename_video))
+    fileSitePreview.addEventListener('change', apply_file_name(filename_site_preview))
+
     fileHtml.addEventListener('change', apply_file_name(filename_html))
     fileCss.addEventListener('change', apply_file_name(filename_css))
     fileJs.addEventListener('change', apply_file_name(filename_js))

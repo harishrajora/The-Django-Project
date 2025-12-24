@@ -478,6 +478,9 @@ body{
 .file_upload{
     content: var(--file-upload);
 }
+.image_file_upload{
+    content: var(--file-upload-image);
+}
 .css_logo{
     content: var(--css-logo);
 }
