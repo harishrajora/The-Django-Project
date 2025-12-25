@@ -217,17 +217,45 @@ class PostActions():
         post = get_object_or_404(Post, id = id)
 
         if post.user == request.user or request.user.is_staff: # cant update posts if its a different user ... but if he is staff he can
-            form = PostForm(request.POST or None, request.FILES or None, instance=post)
-            if form.is_valid():
-                form.save()
-                updated_post = form.save()
-                return HttpResponseRedirect(updated_post.get_absolute_url())
-            
-            context = {
-                "title" : "Update Post",
-                "form" : form,
-            }
-            return render(request, "post_templates/form.html", context)
+
+            if request.method == "POST":
+                action = request.POST.get("action")
+
+                # Update text fields (fallback to old values)
+                post.title = request.POST.get("title") or post.title
+                post.desc = request.POST.get("desc") or post.desc
+
+                # Update files ONLY if uploaded
+                if request.FILES.get("site_preview"):
+                    post.site_preview = request.FILES.get("site_preview")
+
+                if request.FILES.get("user_html"):
+                    post.user_html = request.FILES.get("user_html")
+
+                if request.FILES.get("user_css"):
+                    post.user_css = request.FILES.get("user_css")
+
+                if request.FILES.get("user_js"):
+                    post.user_js = request.FILES.get("user_js")
+
+                if request.FILES.get("image"):
+                    post.image = request.FILES.get("image")
+
+                if request.FILES.get("video"):
+                    post.video = request.FILES.get("video")
+
+                if action == "publish":
+                    if post.title and post.desc:
+                        post.save()
+                        return HttpResponseRedirect(post.get_absolute_url())
+
+                if action == "preview":
+                    return render(
+                        request,
+                        "post_templates/post_design_preview.html",
+                        {"post": post}
+                    )
+            return render(request, "post_templates/create.html",{"post":post})
         else:
             raise Http404("cant update wrong user")
 
@@ -268,11 +296,7 @@ def post_create(request):
                 return HttpResponseRedirect(post.get_absolute_url())
 
         if action == "preview":
-            return render(
-                request,
-                "post_templates/post_design_preview.html",
-                {"post": post}
-            )
+            return render(request,"post_templates/post_design_preview.html",{"post": post})
         
     return render(request, "post_templates/create.html",{"title": "Create Post"})
 

@@ -15,18 +15,19 @@
                 <!-- Title Input -->
                 <div class="mb-4">
                     <label class="form-label fw-bold">Title *</label>
-                    <input type="text" 
+                    <textarea type="text" 
                            name="title" 
                            class="form-control form-control-lg" 
                            placeholder="Enter post title"
                            required
-                           maxlength="200">
+                           rows="1"
+                           maxlength="200">{{post.title}}</textarea>
                 </div>
                 
                 <!-- Description Textarea -->
                 <div class="mb-2">
                     <label class="form-label fw-bold">Description</label>
-                    <textarea id="descTextarea" maxlength="10000" name="desc" class="form-control" rows="4" placeholder="What's this post about?"></textarea>
+                    <textarea id="descTextarea" maxlength="10000" name="desc" class="form-control" rows="4" placeholder="What's this post about?">{{post.desc}}</textarea>
                 </div>
                 
                 <!-- File Uploads -->
@@ -44,7 +45,7 @@
                                         <small class="text_fadded">Supported - png, jpg, jpeg, webp</small>
                                     </div>
                                     <br>
-                                    <small class="text_fadded" id="filename_img"> None |</small>
+                                    <small class="text_fadded" id="filename_img"> {% if post.image %}{{post.image.name|cut:"images_uploaded/"}} {% else %} None {% endif %} |</small> <!-- when updating if theres a image show its name, else none-->
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -60,7 +61,7 @@
                                         <small class="text_fadded">Supported - MOV, avi, mp4, webm, mkv</small>
                                     </div>
                                     <br>
-                                    <small class="text_fadded" id="filename_video"> None |</small>
+                                    <small class="text_fadded" id="filename_video"> {% if post.video %}{{post.video.name|cut:"videos_uploaded/"}} {% else %} None {% endif %}  |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -72,7 +73,7 @@
                                 <div class="card-body">
                                     <label class="form-label fw-bold text_color">Site Preview </label> <img class="image_file_upload" alt="">
                                     <br>
-                                    <small class="text_fadded" id="filename_site_preview"> None |</small>
+                                    <small class="text_fadded" id="filename_site_preview"> {% if post.site_preview %}{{post.site_preview.name|cut:"images_uploaded/"}} {% else %} None {% endif %}  |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -84,7 +85,7 @@
                                 <div class="card-body">
                                     <img class="html_logo" alt="" height="50"> <img class="file_upload" alt="">
                                     <br>
-                                    <small class="text_fadded" id="filename_html"> None |</small>
+                                    <small class="text_fadded" id="filename_html"> {% if post.user_html %}{{post.user_html.name|cut:"html_uploaded/"}} {% else %} None {% endif %} |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -96,7 +97,7 @@
                                 <div class="card-body">
                                     <img class="css_logo" alt="" height="50"><img class="file_upload" alt="">
                                     <br>
-                                    <small class="text_fadded" id="filename_css"> None |</small>
+                                    <small class="text_fadded" id="filename_css"> {% if post.user_css %}{{post.user_css.name|cut:"css_uploaded/"}} {% else %} None {% endif %} |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -108,7 +109,7 @@
                                 <div class="card-body">
                                     <img class="js_logo" alt="" height="50"><img class="file_upload" alt="">
                                     <br>
-                                    <small class="text_fadded" id="filename_js"> None |</small>
+                                    <small class="text_fadded" id="filename_js"> {% if post.user_js %}{{post.user_js.name|cut:"js_uploaded/"}} {% else %} None {% endif %} |</small>
                                     <small class="text_fadded"> 0 / 10 MiB</small>
                                 </div>
                             </div>
@@ -269,7 +270,6 @@
     const uploadJs = document.getElementById('uploadJs');
     const fileJs = document.getElementById('fileJs'); 
 
-
     function triggerFileInput(fileInput) {return function (e) {
         e.preventDefault();
         fileInput.click();
@@ -288,6 +288,7 @@
     function apply_file_name(filename) {return function () {
         if (this.files.length > 0) {
             filename.textContent = this.files[0].name;
+            alert(filename.textContent)
         }
     };
     }
@@ -299,6 +300,15 @@
     const filename_css = document.getElementById('filename_css');
     const filename_js = document.getElementById('filename_js');
 
+    document.addEventListener("DOMContentLoaded", function(){
+        apply_file_name(filename_img)
+        apply_file_name(filename_video)
+        apply_file_name(filename_site_preview)
+        apply_file_name(filename_html)
+        apply_file_name(filename_css)
+        apply_file_name(filename_js)
+    })
+    
     fileImg.addEventListener('change', apply_file_name(filename_img))
     fileVideo.addEventListener('change', apply_file_name(filename_video))
     fileSitePreview.addEventListener('change', apply_file_name(filename_site_preview))
