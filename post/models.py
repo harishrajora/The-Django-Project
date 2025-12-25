@@ -2,20 +2,36 @@ from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from django.core.validators import FileExtensionValidator
+from django.core.exceptions import ValidationError
 #from django.utils.text import slugify
 
 AUTH_USER_MODEL = 'post.User'
 
 class Post(models.Model):
+    def file_size(value): # add this to some file where you can import it from
+        limit = 10 * 1024 * 1024
+        if value.size > limit:
+            raise ValidationError('File too large. Size should not exceed 10 MiB.')
+        
     user = models.ForeignKey('auth.User', verbose_name="OP", related_name="posts", on_delete=models.CASCADE)
     title = models.CharField(max_length=200,verbose_name="Title ")
     desc = RichTextField(verbose_name="")
     date = models.DateTimeField(verbose_name="Date/Time ", auto_now_add=True)
-    image = models.ImageField(upload_to='images_uploaded', null=True, blank=True)
-    video = models.FileField(upload_to='videos_uploaded',null=True, blank=True,
-    validators=[FileExtensionValidator(allowed_extensions=['MOV','avi','mp4','webm','mkv'])])
+
+    image = models.ImageField(upload_to='images_uploaded', null=True, blank=True, validators=[file_size,FileExtensionValidator(allowed_extensions=['png','jpg','jpeg','webp'])])
+    video = models.FileField(upload_to='videos_uploaded',null=True, blank=True, validators=[file_size,FileExtensionValidator(allowed_extensions=['mov','avi','mp4','webm','mkv'])])
+
+
+    user_html = models.FileField(upload_to='html_uploaded',null=True, blank=True, validators=[file_size,FileExtensionValidator(allowed_extensions=['html'])])
+    user_css = models.FileField(upload_to='css_uploaded',null=True, blank=True, validators=[file_size,FileExtensionValidator(allowed_extensions=['css'])])
+    user_js =  models.FileField(upload_to='js_uploaded',null=True, blank=True, validators=[file_size,FileExtensionValidator(allowed_extensions=['js'])])
+
+    site_preview = models.ImageField(upload_to='images_uploaded', null=True, blank=True, validators=[file_size,FileExtensionValidator(allowed_extensions=['png','jpg','jpeg','webp'])])
+
     upvotes = models.PositiveIntegerField(default=0)
     post_views = models.PositiveIntegerField(default=0)
+
+    reports = models.PositiveBigIntegerField(default=0)
 
     def __str__(self):
         return self.title
@@ -36,8 +52,12 @@ class Post(models.Model):
         return reverse('post:delete', kwargs={'id': self.id})
         #return "/user/{}".format(self.id)
 
+    def get_report_url(self):
+        return reverse('post:report', kwargs={'id': self.id})
+        #return "/user/{}".format(self.id)
+
     def get_delete_post_adminpanel_url(self):
-        return reverse('post:delete_post_adminpanel', kwargs={'id': self.id})
+        return reverse('admin_panel:delete_post_adminpanel', kwargs={'id': self.id})
         #return "/user/{}".format(self.id)
 
     def get_delete_url_home(self):
@@ -69,10 +89,16 @@ class Post(models.Model):
     class Meta:
         ordering = ["-date","id"]
 
-
 class UserUpvote(models.Model):
     user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name="upvotes")
     post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="user_upvotes")
+
+    class Meta:
+        unique_together = ("user","post")
+
+class UserReport(models.Model): # there is probably a way better way of doing these
+    user = models.ForeignKey('auth.User', on_delete=models.CASCADE, related_name="reports")
+    post = models.ForeignKey(Post, on_delete=models.CASCADE, related_name="user_reports")
 
     class Meta:
         unique_together = ("user","post")
@@ -84,28 +110,3 @@ class Comment(models.Model):
     content = RichTextField(verbose_name="")
     created_date = models.DateTimeField(verbose_name="Created Date ", auto_now_add=True)
     
-
-class ContactInfo(models.Model):
-    user = models.ForeignKey('auth.User' ,null=True,blank=True,verbose_name="OP", on_delete=models.CASCADE)
-    
-    name = models.CharField(max_length=200,verbose_name="Name")
-    surname = models.CharField(max_length=200,verbose_name="Surname")
-    
-    select_gender = (
-        ('Other', 'Other'),
-        ('Male', 'Male'),
-        ('Female', 'Female'),
-    )
-
-    user_gender = models.CharField(max_length=8, choices=select_gender, default="other")
-
-    adress = models.CharField(max_length=200,verbose_name="Adress")
-    email = models.EmailField(verbose_name="Email")        
-    
-    def get_delete_contact_adminpanel_url(self):
-        return reverse('post:delete_contact_adminpanel', kwargs={'id': self.id})
-        #return "/user/{}".format(self.id)
-
-    def get_modify_contact_adminpanel_url(self):
-        return reverse('post:modify_contact_adminpanel', kwargs={'id': self.id})
-        #return "/user/{}".format(self.id)

@@ -14,13 +14,13 @@
             <div class="card">
                 <ul class="nav d-flex">
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="/accounts/admin_panel/posts">{% if data_category == "posts" %}<b>Posts</b></a>{%else%}Posts{% endif %}</a>
+                        <a class="nav-link text-black" href="/admin_panel/category/posts">{% if data_category == "posts" %}<b>Posts</b></a>{%else%}Posts{% endif %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="/accounts/admin_panel/users">{% if data_category == "users" %}<b>Users</b>{%else%}Users{% endif %}</a>
+                        <a class="nav-link text-black" href="/admin_panel/category/users">{% if data_category == "users" %}<b>Users</b>{%else%}Users{% endif %}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-black" href="/accounts/admin_panel/contacts">{% if data_category == "contacts" %}<b>Contact</b>{%else%}Contact{% endif %}</a>
+                        <a class="nav-link text-black" href="/admin_panel/category/contacts">{% if data_category == "contacts" %}<b>Contact</b>{%else%}Contact{% endif %}</a>
                     </li>
                 </ul>
             </div>
@@ -41,8 +41,10 @@
                         <tr>
                         <th scope="col">#</th>
                         <th scope="col">Posts</th>
+                        <th scope="col">Files</th>
                         <th scope="col">Upvotes</th>
                         <th scope="col">Views</th>
+                        <th scope="col">Reports</th>
                         <th scope="col">UserIDs/Usernames</th>
                         <th scope="col">Actions</th>
                         </tr>
@@ -71,10 +73,10 @@
                                 <th scope="row">{{admin_data.id}}</th>
                                 <td>{{admin_data}}</td>                      
                                       
-                                {% include 'account_templates/modal_user_staff.html' %}
-                                {% include 'account_templates/modal_user_superuser.html' %}
-                                {% include 'account_templates/modal_active.html' %}
-                                {% include 'account_templates/modal_password.html' %}
+                                {% include 'account_templates/modals/modal_user_staff.html' %}
+                                {% include 'account_templates/modals/modal_user_superuser.html' %}
+                                {% include 'account_templates/modals/modal_active.html' %}
+                                {% include 'account_templates/modals/modal_password.html' %}
 
                                 {% if request.user.is_staff %}
                                     {% if request.user.is_superuser %}
@@ -118,17 +120,33 @@
                             <tr>
                                 <th scope="row">{{admin_data.id}}</th>
                                 <td>{{admin_data|safe|truncatechars:50}}</td>
+
+                                <td>
+                                    {% if admin_data.user_html %}
+                                        <small class="text_fadded">HTML </small>
+                                        {% if admin_data.user_css %}
+                                            <small class="text_fadded">+ CSS </small>
+                                        {% endif %}
+                                        {% if admin_data.user_js %}
+                                            <small class="text_fadded"><b>+<a href="https://en.wikipedia.org/wiki/Cross-site_scripting" style="color: red; "> js</a></b></small>
+                                        {% endif %}
+                                    {% else %}
+                                    <small class="text_fadded">None </small>
+                                    {% endif %}
+                                </td>
+
                                 <td><img class="arrow_upvote" alt="Views">{{admin_data.upvotes}}</td>
                                 <td><img class="eye" alt="Views">{{admin_data.post_views}}</td>
+                                <td><img class="flag" alt="Views">{{admin_data.reports}}</td>
                                 <td>#{{admin_data.user.id}} {{admin_data.user.username|safe|truncatechars:50}}</td>
                                 <td>
                                     <a href="{{ admin_data.get_absolute_url }}"><img class="eye" alt="View Post"></a>
                                     <a href="{{ admin_data.get_update_url }}"><img class="edit" alt="Edit Post"></a>
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_{{ admin_data.id }}"><img class="delete" alt="Delete Post"></a>
+                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_delete{{ admin_data.id }}"><img class="delete" alt="Delete Post"></a>
                                 </td>
                             </tr>
 
-                            {% include 'account_templates/modal_post.html' %}
+                            {% include 'account_templates/modals/modal_post.html' %}
                         {% endfor %}
                     {% elif data_category == "contacts" %}
                         {% for admin_data in admin_datas%} <!-- Contact -->
@@ -146,7 +164,7 @@
                                 </td>
                             </tr>
 
-                            {% include 'account_templates/modal_contact.html' %}
+                            {% include 'account_templates/modals/modal_contact.html' %}
                         {% endfor %}
                     {% endif %}
                 </tbody>

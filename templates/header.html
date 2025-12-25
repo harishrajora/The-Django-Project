@@ -1,10 +1,11 @@
 <!-- Navbar Start -->
 
 {% load static %}
+
 <nav class="navbar navbar-expand-lg" role="banner">
 
-    <div class="bubble_container"></div>
-
+    
+    
     <div class="container">
 
         <img src="{% static 'img/header/boat_sail.svg'%}" alt="Home">
@@ -24,7 +25,7 @@
                             data-bs-toggle="modal" data-bs-target="#modal_1">Logout</a></li>
                     <li class="nav-item"><a class="nav-link text-light" href="{% url 'user_profile:test' %}" style="color: white !important;">Profile</a></li>
                     {% if request.user.is_staff %}
-                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'accounts:admin_panel' %}" style="color: white !important;">Admin Panel</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="{% url 'admin_panel:admin_panel' %}" style="color: white !important;">Admin Panel</a></li>
                     {% endif %}
                 {% else %}
                     <li class="nav-item"><a class="nav-link text-light" href="{% url 'accounts:login' %}" style="color: white !important;">Login</a></li>
@@ -39,60 +40,12 @@
             </ul>
         </div>
 
-            <!-- Modal user logout -->
-            <div class="modal fade" id="modal_1" tabindex="-1" aria-labelledby="modalLabel_1" aria-hidden="true">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="modalLabel_1">Logout User</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                        </div>
-                        <div class="modal-body">
-                            Are you sure you want to logout on user? <!--{{account.name}}-->
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-primary button_shadow" data-bs-dismiss="modal">No</button>
-                            {% if request.user.is_authenticated %}
-                                <a href="{% url 'accounts:logout' %}" class="btn btn-danger button_shadow" role="button">Logout</a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
+        {% include 'header_modals/modal_logout.html' %}
+
         </div>
     </div>
 </nav>
 
+<script src="{% static 'js/bubbles.js'%}"></script>
+
 <script src="{% static 'js/theme.js'%}"></script>
-
-<!-- I cant seem to make this script into a file because static stops working -->
-
-<script>/*
-    parent = document.querySelectorAll('.bubble_container')
-    parent.forEach(function(container) {
-    const bubble_image = [
-        "{% static '/img/header/bubble.png' %}",
-    ];
-
-    const bubble_count = 18;
-
-    for(let i = 0; i < bubble_count; i++){
-    
-        const bubble = document.createElement("img");
-        bubble.src = bubble_image[Math.floor(Math.random() * bubble_image.length)];
-
-        bubble.className = "bubble";
-
-        bubble.style.left = Math.random() * 100 + "%";
-
-        bubble.style.scale = (Math.random() + 0.5) * 0.2;
-
-        buuble.style.transform = "scale()"
-        bubble.style.animation = 
-
-        
-
-        container.appendChild(bubble);
-    }
-});*/
-</script>

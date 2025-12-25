@@ -24,53 +24,81 @@
 /* ##############################################################*/
 
 :root[data-theme="light"]{
-    --bg-image: url("{% static '/img/wallpaper/waves5_light.jpg' %}");
+    /* Background */
+    --bg-image: url("{% static 'img/wallpaper/waves5_light.jpg'%}");
     
-    --arrow: url("{% static 'img/arrow_dark.svg' %}");
-    --arrow-fill: url("{% static 'img/arrow_fill_dark.svg' %}");
+    /* Posts */
+    --eye: url("{% static 'img/eye_dark.svg'%}"); /* view icon */
+    
 
-    --eye: url("{% static 'img/eye_dark.svg' %}");
-    --disabled-eye: url("{% static 'img/admin_perms/disabled_visible_dark.svg' %}");
+    --edit: url("{% static 'img/post/edit_dark.svg'%}");
+    --delete: url("{% static 'img/post/delete_dark.svg'%}");
 
-    --edit: url("{% static '/img/post/edit_dark.svg' %}");
-    --delete: url("{% static '/img/post/delete_dark.svg' %}");
+    --flag: url("{% static 'img/post/flag_dark.svg'%}"); /* report icon */
+    --flag-fill: url("{% static 'img/post/flag_dark_fill.svg'%}");
+    
+    --arrow: url("{% static 'img/arrow_dark.svg'%}"); /* upvotes icon */
+    --arrow-fill: url("{% static 'img/arrow_fill_dark.svg'%}");
+    /* Post create */
+    --file-upload: url("{% static 'img/post/create/fileupload_dark.svg'%}"); 
+    --file-upload-image: url("{% static 'img/post/create/image_arrow_up_dark.svg'%}"); 
 
-    --edit-normal: url("{% static 'img/admin_perms/edit_normal_dark.svg' %}");
+    --css-logo: url("{% static 'img/post/create/css_dark.svg'%}"); 
+    --js-logo: url("{% static 'img/post/create/js_dark.svg'%}"); 
+    --html-logo: url("{% static 'img/post/create/html_dark.svg'%}"); 
 
-    --account: url("{% static 'img/admin_perms/account_dark.svg' %}");
-    --account-false: url("{% static 'img/admin_perms/account_false_dark.svg' %}");
+    /* Admin panel */
+    --edit-normal: url("{% static 'img/admin_perms/edit_normal_dark.svg'%}");
+    
+    --disabled-eye: url("{% static 'img/admin_perms/disabled_visible_dark.svg'%}");
 
-    --admin-true: url("{% static 'img/admin_perms/admin_true_dark.svg' %}");
-    --admin-false: url("{% static 'img/admin_perms/admin_false_dark.svg' %}");
+    --account: url("{% static 'img/admin_perms/account_dark.svg'%}");
+    --account-false: url("{% static 'img/admin_perms/account_false_dark.svg'%}");
 
-    --theme_toggle_icon: url("{% static '/img/header/moon.svg'%}");
+    --admin-true: url("{% static 'img/admin_perms/admin_true_dark.svg'%}");
+    --admin-false: url("{% static 'img/admin_perms/admin_false_dark.svg'%}");
 
-    --compass: url("{% static '/img/header/compass.svg'%}");
+    /* Header */
+    --theme_toggle_icon: url("{% static 'img/header/moon.svg'%}");
+    --compass: url("{% static 'img/header/compass.svg'%}"); /* navbar toggle icon */
 }
-
 :root[data-theme="dark"]{
-    --bg-image: url("{% static '/img/wallpaper/waves5_gray.jpg' %}");
+    /* Background */
+    --bg-image: url("{% static 'img/wallpaper/waves5_gray.jpg'%}");
 
-    --arrow: url("{% static 'img/arrow_light.svg' %}");
-    --arrow-fill: url("{% static 'img/arrow_fill_light.svg' %}");
+    /* Posts */
+    --eye: url("{% static 'img/eye_light.svg'%}"); /* view icon */
 
-    --eye: url("{% static 'img/eye_light.svg' %}");
-    --disabled-eye: url("{% static 'img/admin_perms/disabled_visible_light.svg' %}");
+    --edit: url("{% static 'img/post/edit_light.svg'%}");
+    --delete: url("{% static 'img/post/delete_light.svg'%}");
 
-    --edit: url("{% static '/img/post/edit_light.svg' %}");
-    --delete: url("{% static '/img/post/delete_light.svg' %}");
+    --flag: url("{% static 'img/post/flag_light.svg'%}"); /* report icon */
+    --flag-fill: url("{% static 'img/post/flag_light_fill.svg'%}");
 
-    --edit-normal: url("{% static 'img/admin_perms/edit_normal_light.svg' %}");
+    --arrow: url("{% static 'img/arrow_light.svg'%}"); /* upvotes icon */
+    --arrow-fill: url("{% static 'img/arrow_fill_light.svg'%}");
+    /* Post create */
+    --file-upload: url("{% static 'img/post/create/fileupload_light.svg'%}"); 
+    --file-upload-image: url("{% static 'img/post/create/image_arrow_up_light.svg'%}"); 
 
-    --account: url("{% static 'img/admin_perms/account_light.svg' %}");
-    --account-false: url("{% static 'img/admin_perms/account_false_light.svg' %}");
+    --css-logo: url("{% static 'img/post/create/css_light.svg'%}"); 
+    --js-logo: url("{% static 'img/post/create/js_light.svg'%}"); 
+    --html-logo: url("{% static 'img/post/create/html_light.svg'%}"); 
 
-    --admin-true: url("{% static 'img/admin_perms/admin_true_light.svg' %}");
-    --admin-false: url("{% static 'img/admin_perms/admin_false_light.svg' %}");
+    /* Admin panel */
+    --edit-normal: url("{% static 'img/admin_perms/edit_normal_light.svg'%}");
 
-    --theme_toggle_icon: url("{% static '/img/header/sun.svg'%}");
+    --disabled-eye: url("{% static 'img/admin_perms/disabled_visible_light.svg'%}"); 
 
-    --compass: url("{% static '/img/header/compass.svg'%}");
+    --account: url("{% static 'img/admin_perms/account_light.svg'%}");
+    --account-false: url("{% static 'img/admin_perms/account_false_light.svg'%}");
+
+    --admin-true: url("{% static 'img/admin_perms/admin_true_light.svg'%}");
+    --admin-false: url("{% static 'img/admin_perms/admin_false_light.svg'%}");
+
+    /* Header */
+    --theme_toggle_icon: url("{% static 'img/header/sun.svg'%}");
+    --compass: url("{% static 'img/header/compass.svg'%}"); /* navbar toggle icon */
 }
 /* ######################################################################*/
 /* All related dark and light mode colors are in theme.css and style.css */
@@ -78,7 +106,6 @@
 
 </style>
 
-<link rel="stylesheet" href="{% static 'css/theme.css' %}">
 
 <body>
     {% include "header.html" %}
