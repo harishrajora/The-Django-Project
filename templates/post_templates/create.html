@@ -46,7 +46,7 @@
                                     </div>
                                     <br>
                                     <small class="text_fadded" id="filename_img"> {% if post.image %}{{post.image.name|cut:"images_uploaded/"}} {% else %} None {% endif %} |</small> <!-- when updating if theres a image show its name, else none-->
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                    <small class="text_fadded" id="filesize_img"> 0 </small> <small class="text_fadded">/ 10 MiB</small>
                                 </div>
                             </div>
                         </div>
@@ -62,7 +62,7 @@
                                     </div>
                                     <br>
                                     <small class="text_fadded" id="filename_video"> {% if post.video %}{{post.video.name|cut:"videos_uploaded/"}} {% else %} None {% endif %}  |</small>
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                    <small class="text_fadded" id="filesize_video"> 0 </small> <small class="text_fadded">/ 10 MiB</small>
                                 </div>
                             </div>
                         </div>
@@ -74,7 +74,7 @@
                                     <label class="form-label fw-bold text_color">Site Preview </label> <img class="image_file_upload" alt="">
                                     <br>
                                     <small class="text_fadded" id="filename_site_preview"> {% if post.site_preview %}{{post.site_preview.name|cut:"images_uploaded/"}} {% else %} None {% endif %}  |</small>
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                    <small class="text_fadded" id="filesize_site_preview"> 0 </small> <small class="text_fadded">/ 10 MiB</small>
                                 </div>
                             </div>
                         </div>
@@ -86,7 +86,7 @@
                                     <img class="html_logo" alt="" height="50"> <img class="file_upload" alt="">
                                     <br>
                                     <small class="text_fadded" id="filename_html"> {% if post.user_html %}{{post.user_html.name|cut:"html_uploaded/"}} {% else %} None {% endif %} |</small>
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                    <small class="text_fadded" id="filesize_html"> 0 </small> <small class="text_fadded">/ 10 MiB</small>
                                 </div>
                             </div>
                         </div>
@@ -98,7 +98,7 @@
                                     <img class="css_logo" alt="" height="50"><img class="file_upload" alt="">
                                     <br>
                                     <small class="text_fadded" id="filename_css"> {% if post.user_css %}{{post.user_css.name|cut:"css_uploaded/"}} {% else %} None {% endif %} |</small>
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                    <small class="text_fadded" id="filesize_css"> 0 </small> <small class="text_fadded">/ 10 MiB</small>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +110,7 @@
                                     <img class="js_logo" alt="" height="50"><img class="file_upload" alt="">
                                     <br>
                                     <small class="text_fadded" id="filename_js"> {% if post.user_js %}{{post.user_js.name|cut:"js_uploaded/"}} {% else %} None {% endif %} |</small>
-                                    <small class="text_fadded"> 0 / 10 MiB</small>
+                                    <small class="text_fadded" id="filesize_js"> 0 </small> <small class="text_fadded">/ 10 MiB</small>
                                 </div>
                             </div>
                         </div>
@@ -285,28 +285,42 @@
     uploadJs.addEventListener('click', triggerFileInput(fileJs));
 
     
-    function apply_file_name(filename) {return function () {
+    function apply_file_data(filename, filesize) {return function () { // Applies file data to the custom upload cards
         if (this.files.length > 0) {
             filename.textContent = this.files[0].name;
+
+            const filesize_untrimed = (this.files[0].size) / (1024 * 1024);
+            const filesize_string = filesize_untrimed.toString();
+            filesize.textContent = Number(filesize_string.slice(0, 5)); // trims, basically just makes Ex. 74.02389378138 to 74.02
+            filesize.textContent += " MiB"
         }
     };
     }
+
     const filename_img = document.getElementById('filename_img');
+    const filesize_img = document.getElementById('filesize_img');
+
     const filename_video = document.getElementById('filename_video');
+    const filesize_video = document.getElementById('filesize_video');
+
     const filename_site_preview = document.getElementById('filename_site_preview');
+    const filesize_site_preview = document.getElementById('filesize_site_preview');
 
     const filename_html = document.getElementById('filename_html');
+    const filesize_html = document.getElementById('filesize_html');
     const filename_css = document.getElementById('filename_css');
+    const filesize_css = document.getElementById('filesize_css');
     const filename_js = document.getElementById('filename_js');
+    const filesize_js = document.getElementById('filesize_js');
 
     
-    fileImg.addEventListener('change', apply_file_name(filename_img))
-    fileVideo.addEventListener('change', apply_file_name(filename_video))
-    fileSitePreview.addEventListener('change', apply_file_name(filename_site_preview))
+    fileImg.addEventListener('change', apply_file_data(filename_img, filesize_img))
+    fileVideo.addEventListener('change', apply_file_data(filename_video, filesize_video))
+    fileSitePreview.addEventListener('change', apply_file_data(filename_site_preview, filesize_site_preview))
 
-    fileHtml.addEventListener('change', apply_file_name(filename_html))
-    fileCss.addEventListener('change', apply_file_name(filename_css))
-    fileJs.addEventListener('change', apply_file_name(filename_js))
+    fileHtml.addEventListener('change', apply_file_data(filename_html, filesize_html))
+    fileCss.addEventListener('change', apply_file_data(filename_css, filesize_css))
+    fileJs.addEventListener('change', apply_file_data(filename_js, filesize_js))
     
     // Live preview update
     function updatePreview() {
