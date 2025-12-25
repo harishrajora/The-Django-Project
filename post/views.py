@@ -233,59 +233,47 @@ class PostActions():
 
 
 def post_create(request):
-
     authenticate_users(request)
 
-#    if request.method == "POST":
-#        form = postForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#    else:
-#        form = postForm()
-
     if request.method == "POST":
-            # Manually extract data from POST request
-            title = request.POST.get('title')
-            desc = request.POST.get('desc')
+        action = request.POST.get("action")
 
-            image = request.POST.get('image')
-            video = request.POST.get('video')
-            site_preview = request.POST.get('site_preview')
-            
-            user_html = request.POST.get('user_html')
-            user_css = request.POST.get('user_css')
-            user_js = request.POST.get('user_js')
+        title = request.POST.get("title")
+        desc = request.POST.get("desc")
 
-            
-            # Get files
-            image = request.FILES.get('image')
-            video = request.FILES.get('video')
-            
-            # Create post manually
-            if title:  # Add your validation logic
-                if desc:
-                    post = Post(
-                        user=request.user,
-                        title=title,
-                        desc=desc,
+        site_preview = request.POST.get("site_preview")
+        user_html = request.POST.get("user_html")
+        user_css = request.POST.get("user_css")
+        user_js = request.POST.get("user_js")
 
-                        image=image,
-                        video=video,
-                        site_preview=site_preview,
+        image = request.FILES.get("image")
+        video = request.FILES.get("video")
 
-                        user_html=user_html,
-                        user_css=user_css,
-                        user_js=user_js,
-                    )
-                    post.save()
-                    return HttpResponseRedirect(post.get_absolute_url())
-                
-    
-    # For GET request, just render the template
-    context = {
-        "title": "Create Post",
-    }
-    return render(request, "post_templates/create.html", context)
+        post = Post(
+            user=request.user,
+            title=title,
+            desc=desc,
+            image=image,
+            video=video,
+            site_preview=site_preview,
+            user_html=user_html,
+            user_css=user_css,
+            user_js=user_js,
+        )
+
+        if action == "publish":
+            if title and desc:
+                post.save()
+                return HttpResponseRedirect(post.get_absolute_url())
+
+        if action == "preview":
+            return render(
+                request,
+                "post_templates/post_design_preview.html",
+                {"post": post}
+            )
+        
+    return render(request, "post_templates/create.html",{"title": "Create Post"})
 
 def post_create_preview(request):
     if request.method == "POST":
@@ -302,11 +290,33 @@ def post_create_preview(request):
         user_js = request.POST.get('user_js')
         site_preview = request.POST.get('site_preview')
 
+        post = Post(
+            user=request.user,
+            title=title,
+            desc=desc,
+
+            image=image,
+            video=video,
+            site_preview=site_preview,
+
+            user_html=user_html,
+            user_css=user_css,
+            user_js=user_js,
+        )
+
         context = {
-            "title" : title,
-            "desc" : desc,
+            "post" : post
         }
 
         return render(request, "post_templates/post_design_preview.html",context)
-    else:
-        raise Http404
+    post = Post(
+        user=request.user,
+        title="Title Example",
+        desc="This is the Desc",
+    )
+
+    context = {
+        "post" : post
+    }
+
+    return render(request, "post_templates/post_design_preview.html",context)

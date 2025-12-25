@@ -120,7 +120,7 @@
                 
                 <!-- Submit Button -->
                 <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-primary btn-lg py-3 button_shadow">
+                    <button type="submit" name="action" value="publish" class="btn btn-primary btn-lg py-3 button_shadow">
                         <i class="bi bi-plus-circle me-2"></i>Create Post
                     </button>
                     <a href="{% url 'home:home' %}" class="btn btn-danger button_shadow">Cancel</a>
@@ -135,7 +135,7 @@
             <div class="sticky-top" style="top: 20px;">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Post Preview</h2>
-                    <button type="button" class="btn btn-yellow button_shadow" onclick="updatePreview()">
+                    <button type="submit" name="action" value="preview" class="btn btn-yellow button_shadow" onclick="updatePreview()">
                         <img src="{% static 'img/post/create/refresh_light.svg'%}" alt="Refresh">
                     </button>
                 </div>
@@ -145,27 +145,12 @@
                     <div class="card-header bg-dark text-white">
                         <div class="d-flex justify-content-between align-items-center">
                             <span>Preview Window</span>
-                            <div class="btn-group" role="group">
-                                <button class="btn btn-sm btn-outline-light active" data-preview="desktop">
-                                    <i class="bi bi-laptop"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-light" data-preview="tablet">
-                                    <i class="bi bi-tablet"></i>
-                                </button>
-                                <button class="btn btn-sm btn-outline-light" data-preview="mobile">
-                                    <i class="bi bi-phone"></i>
-                                </button>
-                            </div>
                         </div>
                     </div>
                     <div class="card-body p-0">
                         <div id="previewFrame" class="preview-container">
                             <!-- Preview will be rendered here -->
-                            <iframe src="{% url 'post:create_preview' %}" class="w-100 h-100"
-                                style="border: none;" 
-                                sandbox="allow-scripts allow-same-origin">
-                                
-                            </iframe>
+                            <iframe src="{% url 'post:preview' %}" style="position: absolute; height: 100%; width: 100%; border: none"  sandbox="allow-scripts allow-same-origin" scrolling="no"></iframe>
                         </div>
                     </div>
                 </div>
@@ -326,13 +311,6 @@
     function updatePreview() {
         
         const previewFrame = document.getElementById('previewFrame');
-        
-        // Create a blob and display it in an iframe for security
-        const blob = new Blob([fullHtml], {type: 'text/html'});
-        const url = URL.createObjectURL(blob);
-        
-        // Clean up URL after use
-        setTimeout(() => URL.revokeObjectURL(url), 1000);
     }
     
     // Auto-update preview on typing (debounced)
