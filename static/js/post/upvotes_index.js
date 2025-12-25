@@ -1,10 +1,10 @@
-const params = new URLSearchParams(window.location.search);
-const page = params.get("page") || 1;
+const params_upvotes = new URLSearchParams(window.location.search);
+const page_upvotes = params_upvotes.get("page") || 1;
 
 update_upvotes_index()
 function update_upvotes_index() {
     $.ajax({
-    url: "upvotes/?page=" + page,
+    url: "upvotes/?page=" + page_upvotes,
     type: 'get',
     success: function(data) {
         data.posts.forEach(function(item) {
@@ -30,7 +30,6 @@ $(document).on('click', '.upvote-btn', function (e) {
     e.preventDefault();
 
     const url = this.href;
-    alert("working")
     $.ajax({
         url: url,
         type: "GET",
@@ -40,4 +39,4 @@ $(document).on('click', '.upvote-btn', function (e) {
     });
 });
 
-setInterval(update_upvotes_index,1000);
+setInterval(update_upvotes_index,10000);
