@@ -4,7 +4,8 @@
     --bg-secondary-color: rgba(230, 230, 230, 0.3);
     --bg-border-color: rgb(200, 200, 200);
     --text-color: rgb(5, 5, 5);
-    --text-color-faded: rgb(5, 5, 5, 0.5);
+    --text-color-faded: rgba(5, 5, 5, 0.5);
+    --text-color-faded: rgba(5, 5, 5, 0.5);
 
     --shadow-color-08: rgba(0, 0, 0, 0.8);
     --shadow-color-04: rgba(0, 0, 0, 0.4);
@@ -96,6 +97,17 @@
     --txtbox-border-color-focused: rgb(70, 70, 70);
 }
 */
+
+input::placeholder {
+    color: var(--text-color-faded) !important;
+}
+
+/* Target all textarea placeholders */
+textarea::placeholder {
+    color: var(--text-color-faded) !important;
+}
+
+
 
 body {
     color: var(--text-color);
@@ -272,6 +284,27 @@ nav {
     box-shadow: 2px 2px 5px var(--shadow-color-04);
 }
 
+.btn-yellow{
+    color: white;
+    background-color: rgb(255, 186, 36);
+    border-color: orange;
+    transition: all 100ms ease-out;
+    transform: scale(1.00);
+}
+
+.btn-yellow:hover{
+    color: white;
+    background-color: rgb(243, 171, 17);
+    border-color: rgb(255, 173, 21);
+    transition: all 100ms ease-out;
+    transform: scale(1.03);
+}
+
+.btn-yellow:active{
+    background-color: rgb(243, 144, 46) !important;
+    border-color: rgb(255, 138, 21) !important;
+}
+
 .btn-primary{
     color: var(--text-color);
     background-color: var(--button-primary-color);
@@ -316,10 +349,6 @@ nav {
 .btn-primary:active{
     background-color: var(--button-primary-color) !important;
     border-color: var(--button-border-color-hover) !important; 
-}
-
-.card{
-    max-width: 100%;
 }
 
 .card-header{
@@ -445,6 +474,25 @@ body{
 .flag{
     content: var(--flag);
 }
+/* Post Create */
+.file_upload{
+    content: var(--file-upload);
+}
+.image_file_upload{
+    content: var(--file-upload-image);
+}
+.css_logo{
+    content: var(--css-logo);
+}
+
+.js_logo{
+    content: var(--js-logo);
+}
+
+.html_logo{
+    content: var(--html-logo);
+}
+
 
 .flag_fill{
     content: var(--flag-fill);

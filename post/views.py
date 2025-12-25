@@ -217,44 +217,131 @@ class PostActions():
         post = get_object_or_404(Post, id = id)
 
         if post.user == request.user or request.user.is_staff: # cant update posts if its a different user ... but if he is staff he can
-            form = PostForm(request.POST or None, request.FILES or None, instance=post)
-            if form.is_valid():
-                form.save()
-                updated_post = form.save()
-                return HttpResponseRedirect(updated_post.get_absolute_url())
-            
-            context = {
-                "title" : "Update Post",
-                "form" : form,
-            }
-            return render(request, "post_templates/form.html", context)
+
+            if request.method == "POST":
+                action = request.POST.get("action")
+
+                # Update text fields (fallback to old values)
+                post.title = request.POST.get("title") or post.title
+                post.desc = request.POST.get("desc") or post.desc
+
+                # Update files ONLY if uploaded
+                if request.FILES.get("site_preview"):
+                    post.site_preview = request.FILES.get("site_preview")
+
+                if request.FILES.get("user_html"):
+                    post.user_html = request.FILES.get("user_html")
+
+                if request.FILES.get("user_css"):
+                    post.user_css = request.FILES.get("user_css")
+
+                if request.FILES.get("user_js"):
+                    post.user_js = request.FILES.get("user_js")
+
+                if request.FILES.get("image"):
+                    post.image = request.FILES.get("image")
+
+                if request.FILES.get("video"):
+                    post.video = request.FILES.get("video")
+
+                if action == "publish":
+                    if post.title and post.desc:
+                        post.save()
+                        return HttpResponseRedirect(post.get_absolute_url())
+
+                if action == "preview":
+                    return render(
+                        request,
+                        "post_templates/post_design_preview.html",
+                        {"post": post}
+                    )
+            return render(request, "post_templates/create.html",{"post":post})
         else:
             raise Http404("cant update wrong user")
 
 
 def post_create(request):
-
     authenticate_users(request)
 
-#    if request.method == "POST":
-#        form = postForm(request.POST)
-#        if form.is_valid():
-#            form.save()
-#    else:
-#        form = postForm()
+    if request.method == "POST":
+        action = request.POST.get("action")
 
-    form = PostForm(request.POST or None, request.FILES or None)
-    
-    if form.is_valid():
-        updated_post = form.save(commit=False)
-        updated_post.user = request.user
-        updated_post.save()
-        return HttpResponseRedirect(updated_post.get_absolute_url())
+        title = request.POST.get("title")
+        desc = request.POST.get("desc")
+
+        site_preview = request.FILES.get("site_preview")
+
+        user_html = request.FILES.get("user_html")
+        user_css = request.FILES.get("user_css")
+        user_js = request.FILES.get("user_js")
+
+        image = request.FILES.get("image")
+        video = request.FILES.get("video")
+
+        post = Post(
+            user=request.user,
+            title=title,
+            desc=desc,
+            image=image,
+            video=video,
+            site_preview=site_preview,
+            user_html=user_html,
+            user_css=user_css,
+            user_js=user_js,
+        )
+
+        if action == "publish":
+            if title and desc:
+                post.save()
+                return HttpResponseRedirect(post.get_absolute_url())
+
+        if action == "preview":
+            return render(request,"post_templates/post_design_preview.html",{"post": post})
+        
+    return render(request, "post_templates/create.html",{"title": "Create Post"})
+
+def post_create_preview(request):
+    if request.method == "POST":
+        # Manually extract data from POST request
+        title = request.POST.get('title')
+        desc = request.POST.get('desc')
+
+        image = request.POST.get('image')
+        video = request.POST.get('video')
+        site_preview = request.POST.get('site_preview')
+        
+        user_html = request.POST.get('user_html')
+        user_css = request.POST.get('user_css')
+        user_js = request.POST.get('user_js')
+        site_preview = request.POST.get('site_preview')
+
+        post = Post(
+            user=request.user,
+            title=title,
+            desc=desc,
+
+            image=image,
+            video=video,
+            site_preview=site_preview,
+
+            user_html=user_html,
+            user_css=user_css,
+            user_js=user_js,
+        )
+
+        context = {
+            "post" : post
+        }
+
+        return render(request, "post_templates/post_design_preview.html",context)
+    post = Post(
+        user=request.user,
+        title="Title Example",
+        desc="This is the Desc",
+    )
 
     context = {
-        "title" : "Create Post",
-        "form" : form
+        "post" : post
     }
 
-    return render(request, "post_templates/form.html", context)
-
+    return render(request, "post_templates/post_design_preview.html",context)
