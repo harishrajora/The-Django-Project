@@ -288,7 +288,6 @@
     function apply_file_name(filename) {return function () {
         if (this.files.length > 0) {
             filename.textContent = this.files[0].name;
-            alert(filename.textContent)
         }
     };
     }
@@ -300,14 +299,6 @@
     const filename_css = document.getElementById('filename_css');
     const filename_js = document.getElementById('filename_js');
 
-    document.addEventListener("DOMContentLoaded", function(){
-        apply_file_name(filename_img)
-        apply_file_name(filename_video)
-        apply_file_name(filename_site_preview)
-        apply_file_name(filename_html)
-        apply_file_name(filename_css)
-        apply_file_name(filename_js)
-    })
     
     fileImg.addEventListener('change', apply_file_name(filename_img))
     fileVideo.addEventListener('change', apply_file_name(filename_video))
