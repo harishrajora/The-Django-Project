@@ -241,10 +241,11 @@ def post_create(request):
         title = request.POST.get("title")
         desc = request.POST.get("desc")
 
-        site_preview = request.POST.get("site_preview")
-        user_html = request.POST.get("user_html")
-        user_css = request.POST.get("user_css")
-        user_js = request.POST.get("user_js")
+        site_preview = request.FILES.get("site_preview")
+
+        user_html = request.FILES.get("user_html")
+        user_css = request.FILES.get("user_css")
+        user_js = request.FILES.get("user_js")
 
         image = request.FILES.get("image")
         video = request.FILES.get("video")
