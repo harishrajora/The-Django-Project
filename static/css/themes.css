@@ -27,7 +27,7 @@
     --button-primary-color-hover: rgb(255, 255, 255);
     --button-primary-color: rgb(245, 245, 245);
 
-    --nav0ar-gradient: linear-gradient(rgb(45, 45, 45, 0.6) 80%, #ffffff00 90%);
+    --navbar-gradient: linear-gradient(rgb(45, 45, 45, 0.6) 80%, #ffffff00 90%);
     --paginator-gradient: linear-gradient(#ffffff00, #ffffff);
 
     --bg-txtbox-color: rgb(245, 245, 245);
