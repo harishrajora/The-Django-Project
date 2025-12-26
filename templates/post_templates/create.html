@@ -121,15 +121,26 @@
                 
                 <!-- Submit Button -->
                 <div class="d-grid gap-2">
-                    <button type="submit" name="action" value="publish" class="btn btn-primary btn-lg py-3 button_shadow">
-                        <i class="bi bi-plus-circle me-2"></i>Create Post
-                    </button>
+                    {% if moderated %}
+                    <a href="" class="btn btn-primary btn-lg py-3 button_shadow" data-bs-toggle="modal" data-bs-target="#modal_staff_modified_warning">
+                        <i class="bi bi-plus-circle me-2"></i>Create Post MOD
+                    </a>
+                    {% else%}
+                        <button type="submit" name="action" value="publish" class="btn btn-primary btn-lg py-3 button_shadow" data-bs-toggle="modal" data-bs-target="modal_staff_modified_warning">
+                            <i class="bi bi-plus-circle me-2"></i>Create Post Unmod
+                        </button>
+                    {% endif %}
                     <a href="{% url 'home:home' %}" class="btn btn-danger button_shadow">Cancel</a>
                 </div>
 
                 </div>
             </form>
         </div>
+
+        
+        {% if moderated %}
+            {% include 'post_templates/modals/modal_create_staff_modified.html' %}
+        {% endif %}
         
         <!-- Right Side: Live Preview -->
         <div class="col-lg-8 col-md-7 p-4">
@@ -181,6 +192,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Custom Styling -->
 <style>

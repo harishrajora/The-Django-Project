@@ -108,6 +108,20 @@ textarea::placeholder {
 .modal-content{
     background-color: var(--bg-color);
 }
+.modal-warning-content{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    color: var(--bs-modal-color);
+    pointer-events: auto;
+    background-color: rgba(220, 53, 70, 0.5);
+    backdrop-filter: blur(20px);
+    background-clip: padding-box;
+    border: var(--bs-modal-border-width) solid var(--bs-modal-border-color);
+    border-radius: var(--bs-modal-border-radius);
+    outline: 0;
+}
 
 .modal-header{
     border-bottom: var(--bs-modal-header-border-width) solid var(--bg-border-color);
