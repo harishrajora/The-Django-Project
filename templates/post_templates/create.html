@@ -123,11 +123,11 @@
                 <div class="d-grid gap-2">
                     {% if moderated %}
                     <a href="" class="btn btn-primary btn-lg py-3 button_shadow" data-bs-toggle="modal" data-bs-target="#modal_staff_modified_warning">
-                        <i class="bi bi-plus-circle me-2"></i>Create Post MOD
+                        <i class="bi bi-plus-circle me-2"></i>Create Post
                     </a>
                     {% else%}
                         <button type="submit" name="action" value="publish" class="btn btn-primary btn-lg py-3 button_shadow" data-bs-toggle="modal" data-bs-target="modal_staff_modified_warning">
-                            <i class="bi bi-plus-circle me-2"></i>Create Post Unmod
+                            <i class="bi bi-plus-circle me-2"></i>Create Post
                         </button>
                     {% endif %}
                     <a href="{% url 'home:home' %}" class="btn btn-danger button_shadow">Cancel</a>
