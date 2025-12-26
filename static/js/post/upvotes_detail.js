@@ -15,19 +15,25 @@ function update_upvote_detail() {
             upvote_icon.removeClass('arrow_fill_upvote').addClass('arrow_upvote');
         }
     },
-    error: function(data) { 
-        alert('Unable to get detail upvotes');
-    }
 }); 
 }
-$('#upvote-btn').on('click', function (e) {
-    e.preventDefault();
 
+$(document).on('click', '#upvote-btn', function (e) {
+    e.preventDefault(); 
+
+    
+    const url = this.href;
     $.ajax({
-        url: this.href,
+        url: url,
         type: "GET",
         success: function () {
+            alert("asdadsa")
             update_upvote_detail();
+        },
+        error: function (xhr) {
+            console.log("AJAX ERROR");
+            console.log(xhr.status);
+            console.log(xhr.responseText);
         }
     });
 });

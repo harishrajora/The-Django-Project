@@ -42,7 +42,10 @@
                             
                             {% if request.user.is_authenticated %}
 
-                                <a id="upvote-btn" href="{% url 'post:upvote_post_detail' post.id %}?page={{ posts.number }}" role="button"><img id="upvote-icon" class="scale-hover arrow_upvote" alt=""></a><span id="upvotes_counter">{{post.upvotes}}</span> 
+                                <a id="upvote-btn" data-id="{{ post.id }}" href="{% url 'post:upvote_post_detail' post.id %}" role="button">
+                                    <img id="upvote-icon" class="scale-hover arrow_upvote" alt="">
+                                </a>
+                                <span id="upvotes_counter">{{post.upvotes}}</span> 
 
                                 <img class="ms-2 eye" alt=""><span id="views_counter">{{ post.post_views }}</span>  
 
