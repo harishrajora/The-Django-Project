@@ -22,6 +22,11 @@
 .flag{
     content: var(--flag);
 }
+
+.options_toggle{
+    content: var(--options);
+}
+
 /* Post Create */
 .file_upload{
     content: var(--file-upload);

@@ -38,9 +38,12 @@
                             
                         </div>
 
-                        <div class="d-flex mt-auto card-header m-1">
-                            
+
+                        <div class="d-flex align-items-center mt-auto px-2 card-header"> <!-- post footer -->
+
+                            <!-- upvotes views -->
                             {% if request.user.is_authenticated %}
+                                <div class="d-flex align-items-center gap-2">
 
                                 <a id="upvote-btn" data-id="{{ post.id }}" href="{% url 'post:upvote_post_detail' post.id %}" role="button">
                                     <img id="upvote-icon" class="scale-hover arrow_upvote" alt="">
@@ -49,23 +52,35 @@
 
                                 <img class="ms-2 eye" alt=""><span id="views_counter">{{ post.post_views }}</span>  
 
-                                {% if post.user == request.user %}
-                                    <div class="ms-auto">
-                                        <a href="{{ post.get_update_url }}"><img class="paginator-arrows edit" alt="Edit Post"></a>
-                                        <a href="" data-bs-toggle="modal" data-bs-target="#modal_{{ post.id }}"><img class="paginator-arrows delete" alt="Delete Post"></a>
-                                    </div>
-                                {% endif %}
-
-                            <div class="ms-auto">
-                                {% if post.id in reported_posts %}
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_report_{{ post.id }}"><img class="flag_fill" alt="Report Post"></a>
-                                {% else %}
-                                    <a href="" data-bs-toggle="modal" data-bs-target="#modal_report_{{ post.id }}"><img class="flag" alt="Report Post"></a>
-                                {% endif %}
-                                <small data-toggle="tooltip" data-placement="top" title="{{post.date}}">{{ post.date|timesince_single_unit }} Ago</small>
-                            </div>
-
+                                </div>
                             {% endif %}
+
+
+                            <div class="d-flex align-items-center ms-auto gap-2">
+
+                                <!-- option actions -->
+                                <div class="collapse text-end px-2" id="postfooteritems_{{ post.id }}">
+                                    {% if post.user == request.user %}
+                                        <a href="{% url 'post:update' post.id %}"><img class="edit" alt="Edit Post"></a>
+                                        <a href="" data-bs-toggle="modal" data-bs-target="#modal_delete_{{ post.id }}"><img class="delete" alt="Delete Post"></a>
+                                    {% endif %}
+                                    {% if request.user.is_authenticated %}
+                                        {% if post.id in reported_posts %}
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_report_{{ post.id }}"><img class="flag_fill" alt="Report Post"></a>
+                                        {% else %}
+                                            <a href="" data-bs-toggle="modal" data-bs-target="#modal_report_{{ post.id }}"><img class="flag" alt="Report Post"></a>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+
+                                <small class="d-none d-md-block d-md-none d-lg-block" data-bs-toggle="tooltip" title="{{ post.date }}">
+                                    {{ post.date|timesince_single_unit }} Ago
+                                </small>
+
+                                <button class="btn p-0" type="button" data-bs-toggle="collapse" data-bs-target="#postfooteritems_{{ post.id }}" aria-label="Toggle Post Actions">
+                                    <img class="options_toggle" alt="">
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
