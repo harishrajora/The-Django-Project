@@ -307,7 +307,7 @@ def post_create(request):
         if action == "preview":
             return render(request,"post_templates/post_design_preview.html",{"post": post})
         
-    return render(request, "post_templates/create.html",{"title": "Create Post"})
+    return render(request, "post_templates/create.html",{"is_creating": True}) # is creating will show create post or update post
 
 def post_create_preview(request):
     if request.method == "POST":
