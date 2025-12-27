@@ -21,21 +21,14 @@ function update_upvote_detail() {
 $(document).on('click', '#upvote-btn', function (e) {
     e.preventDefault(); 
 
-    
     const url = this.href;
     $.ajax({
         url: url,
         type: "GET",
         success: function () {
-            alert("asdadsa")
             update_upvote_detail();
         },
-        error: function (xhr) {
-            console.log("AJAX ERROR");
-            console.log(xhr.status);
-            console.log(xhr.responseText);
-        }
     });
 });
 
-setInterval(update_upvote_detail,5000);
+setInterval(update_upvote_detail,1000);
