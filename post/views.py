@@ -265,6 +265,8 @@ class PostActions():
                 return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
         else:
             raise Http404("cant update wrong user")
+            
+        return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
 
 
 def post_create(request):
