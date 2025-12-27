@@ -33,6 +33,8 @@ class Post(models.Model):
 
     reports = models.PositiveBigIntegerField(default=0)
 
+    staff_modified = models.BooleanField(default=False)
+
     def __str__(self):
         return self.title
 

@@ -217,47 +217,56 @@ class PostActions():
         post = get_object_or_404(Post, id = id)
 
         if post.user == request.user or request.user.is_staff: # cant update posts if its a different user ... but if he is staff he can
+            if post.staff_modified == False or  request.user.is_staff: # cannot modify moderated post
+                if request.method == "POST":
 
-            if request.method == "POST":
-                action = request.POST.get("action")
+                    if request.user.is_staff:
+                        post.staff_modified = True
 
-                # Update text fields (fallback to old values)
-                post.title = request.POST.get("title") or post.title
-                post.desc = request.POST.get("desc") or post.desc
+                    action = request.POST.get("action")
 
-                # Update files ONLY if uploaded
-                if request.FILES.get("site_preview"):
-                    post.site_preview = request.FILES.get("site_preview")
+                    # Update text fields (fallback to old values)
+                    post.title = request.POST.get("title") or post.title
+                    post.desc = request.POST.get("desc") or post.desc
 
-                if request.FILES.get("user_html"):
-                    post.user_html = request.FILES.get("user_html")
+                    # Update files ONLY if uploaded
+                    if request.FILES.get("site_preview"):
+                        post.site_preview = request.FILES.get("site_preview")
 
-                if request.FILES.get("user_css"):
-                    post.user_css = request.FILES.get("user_css")
+                    if request.FILES.get("user_html"):
+                        post.user_html = request.FILES.get("user_html")
 
-                if request.FILES.get("user_js"):
-                    post.user_js = request.FILES.get("user_js")
+                    if request.FILES.get("user_css"):
+                        post.user_css = request.FILES.get("user_css")
 
-                if request.FILES.get("image"):
-                    post.image = request.FILES.get("image")
+                    if request.FILES.get("user_js"):
+                        post.user_js = request.FILES.get("user_js")
 
-                if request.FILES.get("video"):
-                    post.video = request.FILES.get("video")
+                    if request.FILES.get("image"):
+                        post.image = request.FILES.get("image")
 
-                if action == "publish":
-                    if post.title and post.desc:
-                        post.save()
-                        return HttpResponseRedirect(post.get_absolute_url())
+                    if request.FILES.get("video"):
+                        post.video = request.FILES.get("video")
 
-                if action == "preview":
-                    return render(
-                        request,
-                        "post_templates/post_design_preview.html",
-                        {"post": post}
-                    )
-            return render(request, "post_templates/create.html",{"post":post})
+                    if action == "publish":
+                        if post.title and post.desc:
+                            post.save()
+                            return HttpResponseRedirect(post.get_absolute_url())
+
+                    if action == "preview":
+                        return render(
+                            request,
+                            "post_templates/post_design_preview.html",
+                            {"post": post}
+                        )
+                    
+                    return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
+            else:
+                return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
         else:
             raise Http404("cant update wrong user")
+            
+        return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
 
 
 def post_create(request):
