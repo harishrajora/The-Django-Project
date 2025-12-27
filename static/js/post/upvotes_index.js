@@ -20,9 +20,6 @@ function update_upvotes_index() {
 
         })
     },
-    error: function(data) { 
-        alert('Unable to get index upvotes');
-    }
 }); 
 }
 
