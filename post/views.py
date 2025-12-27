@@ -84,7 +84,7 @@ class ListPosts():
     def post_get_reports(self,request):
         return self.fetch_post_data(request,UserReport)
     
-    def list_blog_posts(self,request):
+    def list_feed_posts(self,request):
         posts = self.posts_paginator(request)
         upvotes = self.post_get_upvotes(request)
         reports = self.post_get_reports(request)
@@ -163,7 +163,7 @@ class ListPosts():
 
 class PostActions():
 
-    def upvote_in_blog(self, request, id):
+    def upvote_in_feed(self, request, id):
         self.upvote_post(request, id)
         page = request.GET.get("page", 1)
         return redirect(f"{reverse('post:index')}?page={page}")
