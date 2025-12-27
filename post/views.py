@@ -9,6 +9,7 @@ from admin_panel.forms import ContactusForm
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models import F
+from django.http import JsonResponse
 
 from django.core.paginator import Paginator
 from django.conf import settings
@@ -83,7 +84,7 @@ class ListPosts():
     def post_get_reports(self,request):
         return self.fetch_post_data(request,UserReport)
     
-    def list_blog_posts(self,request):
+    def list_feed_posts(self,request):
         posts = self.posts_paginator(request)
         upvotes = self.post_get_upvotes(request)
         reports = self.post_get_reports(request)
@@ -162,7 +163,7 @@ class ListPosts():
 
 class PostActions():
 
-    def upvote_in_blog(self, request, id):
+    def upvote_in_feed(self, request, id):
         self.upvote_post(request, id)
         page = request.GET.get("page", 1)
         return redirect(f"{reverse('post:index')}?page={page}")
@@ -217,48 +218,112 @@ class PostActions():
         post = get_object_or_404(Post, id = id)
 
         if post.user == request.user or request.user.is_staff: # cant update posts if its a different user ... but if he is staff he can
+            if post.staff_modified == False or  request.user.is_staff: # cannot modify moderated post
+                if request.method == "POST":
 
-            if request.method == "POST":
-                action = request.POST.get("action")
+                    if request.user.is_staff:
+                        post.staff_modified = True
 
-                # Update text fields (fallback to old values)
-                post.title = request.POST.get("title") or post.title
-                post.desc = request.POST.get("desc") or post.desc
+                    action = request.POST.get("action")
 
-                # Update files ONLY if uploaded
-                if request.FILES.get("site_preview"):
-                    post.site_preview = request.FILES.get("site_preview")
+                    # Update text fields (fallback to old values)
+                    post.title = request.POST.get("title") or post.title
+                    post.desc = request.POST.get("desc") or post.desc
 
-                if request.FILES.get("user_html"):
-                    post.user_html = request.FILES.get("user_html")
+                    # Update files ONLY if uploaded
+                    if request.FILES.get("site_preview"):
+                        post.site_preview = request.FILES.get("site_preview")
 
-                if request.FILES.get("user_css"):
-                    post.user_css = request.FILES.get("user_css")
+                    if request.FILES.get("user_html"):
+                        post.user_html = request.FILES.get("user_html")
 
-                if request.FILES.get("user_js"):
-                    post.user_js = request.FILES.get("user_js")
+                    if request.FILES.get("user_css"):
+                        post.user_css = request.FILES.get("user_css")
 
-                if request.FILES.get("image"):
-                    post.image = request.FILES.get("image")
+                    if request.FILES.get("user_js"):
+                        post.user_js = request.FILES.get("user_js")
 
-                if request.FILES.get("video"):
-                    post.video = request.FILES.get("video")
+                    if request.FILES.get("image"):
+                        post.image = request.FILES.get("image")
 
-                if action == "publish":
-                    if post.title and post.desc:
-                        post.save()
-                        return HttpResponseRedirect(post.get_absolute_url())
+                    if request.FILES.get("video"):
+                        post.video = request.FILES.get("video")
 
-                if action == "preview":
-                    return render(
-                        request,
-                        "post_templates/post_design_preview.html",
-                        {"post": post}
-                    )
-            return render(request, "post_templates/create.html",{"post":post})
+                    if action == "publish":
+                        if post.title and post.desc:
+                            post.save()
+                            return HttpResponseRedirect(post.get_absolute_url())
+
+                    if action == "preview":
+                        return render(
+                            request,
+                            "post_templates/post_design_preview.html",
+                            {"post": post}
+                        )
+                    
+                    return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
+            else:
+                return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
         else:
             raise Http404("cant update wrong user")
+            
+        return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
 
+
+# AJax Functions for realtime updating
+
+def post_detail_upvotes_ajax(request,id):
+    post = get_object_or_404(Post, id = id)
+
+    upvoted = False
+    if request.user.is_authenticated:
+        upvoted = UserUpvote.objects.filter(user=request.user, post=post).exists()
+    
+    data = {"upvotes" : post.upvotes,
+            "upvoted" : upvoted,}
+    return JsonResponse(data)
+
+def post_index_upvotes_ajax(request):
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 9)  # Show 9 posts per page.
+    
+    post_ids = post_list.values_list('id', flat=True)
+
+    upvoted_qs = UserUpvote.objects.filter(user=request.user, post_id__in=post_ids)
+    upvoted_posts = set(upvoted_qs.values_list('post_id', flat=True))
+
+    page = request.GET.get("page")
+    page_obj = paginator.get_page(page)
+    data = {
+        "posts": [
+                {"id": post.id, 
+                "upvotes": post.upvotes,
+                "upvoted": post.id in upvoted_posts}
+            for post in page_obj.object_list
+        ]
+    }
+
+    return JsonResponse(data)
+
+def post_detail_views_ajax(request,id):
+    post = get_object_or_404(Post, id = id)
+
+    data = {"post_views":post.post_views}
+    return JsonResponse(data)
+
+def post_index_views_ajax(request):
+    post_list = Post.objects.all()
+    paginator = Paginator(post_list, 9)  # 9 posts per page
+
+    page = request.GET.get("page")
+    page_obj = paginator.get_page(page)
+    data = {
+        "posts": [
+            {"id": post.id, "views": post.post_views}
+            for post in page_obj.object_list
+        ]
+    }
+    return JsonResponse(data)
 
 def post_create(request):
     authenticate_users(request)
@@ -298,7 +363,7 @@ def post_create(request):
         if action == "preview":
             return render(request,"post_templates/post_design_preview.html",{"post": post})
         
-    return render(request, "post_templates/create.html",{"title": "Create Post"})
+    return render(request, "post_templates/create.html",{"is_creating": True}) # is creating will show create post or update post
 
 def post_create_preview(request):
     if request.method == "POST":

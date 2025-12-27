@@ -6,7 +6,7 @@
     <div class="row">
         <!-- Left Side: Form Inputs -->
         <div class="col-lg-4 col-md-5 p-4 ">
-            <h1 class="mb-4 text_color">Create New Post</h1>
+            <h1 class="mb-4 text_color">{% if is_creating %}Create Post{% else %} Update Post {% endif %}</h1>
             <!-- <h5>Logged in as {{request.user|safe|truncatechars:50}}</h5> -->
             
             <form method="POST" enctype="multipart/form-data" id="postForm">
@@ -121,15 +121,26 @@
                 
                 <!-- Submit Button -->
                 <div class="d-grid gap-2">
-                    <button type="submit" name="action" value="publish" class="btn btn-primary btn-lg py-3 button_shadow">
-                        <i class="bi bi-plus-circle me-2"></i>Create Post
-                    </button>
+                    {% if moderated %}
+                    <a href="" class="btn btn-primary btn-lg py-3 button_shadow" data-bs-toggle="modal" data-bs-target="#modal_staff_modified_warning">
+                        {% if is_creating %}Create Post{% else %} Update Post {% endif %}
+                    </a>
+                    {% else%}
+                        <button type="submit" name="action" value="publish" class="btn btn-primary btn-lg py-3 button_shadow" data-bs-toggle="modal" data-bs-target="modal_staff_modified_warning">
+                            {% if is_creating %}Create Post{% else %} Update Post {% endif %}
+                        </button>
+                    {% endif %}
                     <a href="{% url 'home:home' %}" class="btn btn-danger button_shadow">Cancel</a>
                 </div>
 
                 </div>
             </form>
         </div>
+
+        
+        {% if moderated %}
+            {% include 'post_templates/modals/modal_create_staff_modified.html' %}
+        {% endif %}
         
         <!-- Right Side: Live Preview -->
         <div class="col-lg-8 col-md-7 p-4">
@@ -143,7 +154,7 @@
                 
                 <!-- Preview Container -->
                 <div class="card shadow-lg">
-                    <div class="card-header bg-dark text-white">
+                    <div class="card-header">
                         <div class="d-flex justify-content-between align-items-center">
                             <span>Preview Window</span>
                         </div>
@@ -181,6 +192,7 @@
         </div>
     </div>
 </div>
+
 
 <!-- Custom Styling -->
 <style>
