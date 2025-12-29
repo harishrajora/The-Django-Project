@@ -37,7 +37,7 @@
                         <div class="col-md-6">
                             <div class="btn btn-primary py-1 mt-3 button_shadow" style="height: 85%; width: 97%;"> 
                                 <a href=""><span class="div_link" id="uploadImg"></span></a> <!-- Add Image -->
-                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteImg"><img class="delete" alt=""></span></a> <!-- Add Image -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteImg"><img class="delete scale-hover" alt=""></span></a> <!-- Add Image -->
                                 <input type="file" name="image" id="fileImg" style="display: none;">
                                 <div class="card-body">
                                     <label class="form-label fw-bold text_color">Image</label> <img class="image_file_upload" alt=""> <!-- <a href="teststst"><img class="delete" alt=""></a>  I needs to ix z indexing before i can do this -->
@@ -269,6 +269,8 @@
     // Uploads img and video from the custom cards using links
     const uploadImg = document.getElementById('uploadImg');
     const fileImg = document.getElementById('fileImg'); // input
+    const deleteImg = document.getElementById('deleteImg');
+
     const uploadVideo = document.getElementById('uploadVideo');
     const fileVideo = document.getElementById('fileVideo'); // input
 
@@ -283,13 +285,40 @@
     const uploadJs = document.getElementById('uploadJs');
     const fileJs = document.getElementById('fileJs'); 
 
+    const filename_img = document.getElementById('filename_img');
+    const filesize_img = document.getElementById('filesize_img');
+
+    const filename_video = document.getElementById('filename_video');
+    const filesize_video = document.getElementById('filesize_video');
+
+    const filename_site_preview = document.getElementById('filename_site_preview');
+    const filesize_site_preview = document.getElementById('filesize_site_preview');
+
+    const filename_html = document.getElementById('filename_html');
+    const filesize_html = document.getElementById('filesize_html');
+    const filename_css = document.getElementById('filename_css');
+    const filesize_css = document.getElementById('filesize_css');
+    const filename_js = document.getElementById('filename_js');
+    const filesize_js = document.getElementById('filesize_js');
+
     function triggerFileInput(fileInput) {return function (e) {
         e.preventDefault();
         fileInput.click();
     };
     }
 
+    function removeSelectedFile(fileInput, filename, filesize) {return function (e) {
+        e.preventDefault();
+        fileInput.value = "";
+        filename.textContent = "";
+        filesize.textContent = "None | 0";
+        apply_file_data(filename, filesize);
+    };
+    }
+
     uploadImg.addEventListener('click', triggerFileInput(fileImg));
+    deleteImg.addEventListener('click', removeSelectedFile(fileImg, filename_img, filesize_img));
+
     uploadVideo.addEventListener('click', triggerFileInput(fileVideo));
     uploadSitePreview.addEventListener('click', triggerFileInput(fileSitePreview));
 
@@ -324,22 +353,6 @@
         }
     };
     }
-
-    const filename_img = document.getElementById('filename_img');
-    const filesize_img = document.getElementById('filesize_img');
-
-    const filename_video = document.getElementById('filename_video');
-    const filesize_video = document.getElementById('filesize_video');
-
-    const filename_site_preview = document.getElementById('filename_site_preview');
-    const filesize_site_preview = document.getElementById('filesize_site_preview');
-
-    const filename_html = document.getElementById('filename_html');
-    const filesize_html = document.getElementById('filesize_html');
-    const filename_css = document.getElementById('filename_css');
-    const filesize_css = document.getElementById('filesize_css');
-    const filename_js = document.getElementById('filename_js');
-    const filesize_js = document.getElementById('filesize_js');
 
     
     fileImg.addEventListener('change', apply_file_data(filename_img, filesize_img))
