@@ -37,7 +37,7 @@
                         <div class="col-md-6">
                             <div class="btn btn-primary py-1 mt-3 button_shadow" style="height: 85%; width: 97%;"> 
                                 <a href=""><span class="div_link" id="uploadImg"></span></a> <!-- Add Image -->
-                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteImg"><img class="delete scale-hover" alt=""></span></a> <!-- Add Image -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteImg"><img class="delete scale-hover" alt=""></span></a> <!-- Delete Image -->
                                 <input type="file" name="image" id="fileImg" style="display: none;">
                                 <div class="card-body">
                                     <label class="form-label fw-bold text_color">Image</label> <img class="image_file_upload" alt=""> <!-- <a href="teststst"><img class="delete" alt=""></a>  I needs to ix z indexing before i can do this -->
@@ -54,6 +54,7 @@
                         <div class="col-md-6">
                             <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
                                 <a href=""><span class="div_link"  id="uploadVideo"></span></a> <!-- Add Video -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteVideo"><img class="delete scale-hover" alt=""></span></a> <!-- Delete Video -->
                                 <input type="file" name="video" id="fileVideo" style="display: none;">
                                 <div class="card-body">
                                     <label class="form-label fw-bold text_color">Video</label> <img class="image_file_upload" alt="">
@@ -70,6 +71,7 @@
                         <div class="col-md-6 w-100">
                             <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
                                 <a href=""><span class="div_link"  id="uploadSitePreview"></span></a> <!-- Add site preview -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteSitePreview"><img class="delete scale-hover" alt=""></span></a> <!-- Delete SitePreview -->
                                 <input type="file" name="site_preview" id="fileSitePreview" style="display: none;">
                                 <div class="card-body">
                                     <label class="form-label fw-bold text_color">Site Preview </label> <img class="image_file_upload" alt="">
@@ -82,6 +84,7 @@
                         <div class="col-md-6">
                             <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 97%;">
                                 <a href=""><span class="div_link"  id="uploadHtml"></span></a> <!-- Add Html -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteHtml"><img class="delete scale-hover" alt=""></span></a> <!-- Delete Html -->
                                 <input type="file" name="user_html" id="fileHtml" style="display: none;">
                                 <div class="card-body">
                                     <img class="html_logo" alt="" height="50"> <img class="file_upload" alt="">
@@ -94,6 +97,7 @@
                         <div class="col-md-6">
                             <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
                                 <a href=""><span class="div_link"  id="uploadCss"></span></a> <!-- Add Css -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteCss"><img class="delete scale-hover" alt=""></span></a> <!-- Delete Css -->
                                 <input type="file" name="user_css" id="fileCss" style="display: none;">
                                 <div class="card-body">
                                     <img class="css_logo" alt="" height="50"><img class="file_upload" alt="">
@@ -106,6 +110,7 @@
                         <div class="col-md-6 w-100">
                             <div class="btn btn-primary py-1 mt-3  button_shadow" style="height: 85%; width: 99%;">
                                 <a href=""><span class="div_link"  id="uploadJs"></span></a> <!-- Add Js -->
+                                <a href=""><span class="div_link" style="width: 2rem; height: 2rem;" id="deleteJs"><img class="delete scale-hover" alt=""></span></a> <!-- Delete Js -->
                                 <input type="file" name="user_js" id="fileJs" style="display: none;">
                                 <div class="card-body">
                                     <img class="js_logo" alt="" height="50"><img class="file_upload" alt="">
@@ -273,17 +278,25 @@
 
     const uploadVideo = document.getElementById('uploadVideo');
     const fileVideo = document.getElementById('fileVideo'); // input
+    const deleteVideo = document.getElementById('deleteVideo');
 
     const uploadSitePreview = document.getElementById('uploadSitePreview');
     const fileSitePreview = document.getElementById('fileSitePreview'); // input
+    const deleteSitePreview = document.getElementById('deleteSitePreview');
 
     // File uploads
     const uploadHtml = document.getElementById('uploadHtml');
     const fileHtml = document.getElementById('fileHtml');
+    const deleteHtml = document.getElementById('deleteHtml');
+
     const uploadCss = document.getElementById('uploadCss');
     const fileCss = document.getElementById('fileCss');
+    const deleteCSS = document.getElementById('deleteCss');
+
     const uploadJs = document.getElementById('uploadJs');
-    const fileJs = document.getElementById('fileJs'); 
+    const fileJs = document.getElementById('fileJs');
+    const deleteJs = document.getElementById('deleteJs');
+
 
     const filename_img = document.getElementById('filename_img');
     const filesize_img = document.getElementById('filesize_img');
@@ -320,12 +333,19 @@
     deleteImg.addEventListener('click', removeSelectedFile(fileImg, filename_img, filesize_img));
 
     uploadVideo.addEventListener('click', triggerFileInput(fileVideo));
+    deleteVideo.addEventListener('click', removeSelectedFile(fileVideo, filename_video, filesize_video));
+
     uploadSitePreview.addEventListener('click', triggerFileInput(fileSitePreview));
+    deleteSitePreview.addEventListener('click', removeSelectedFile(fileSitePreview, filename_site_preview, filesize_site_preview))
 
     uploadHtml.addEventListener('click', triggerFileInput(fileHtml));
+    deleteHtml.addEventListener('click', removeSelectedFile(fileHtml, filename_html, filesize_html));
+    
     uploadCss.addEventListener('click', triggerFileInput(fileCss));
-    uploadJs.addEventListener('click', triggerFileInput(fileJs));
+    deleteCss.addEventListener('click', removeSelectedFile(fileCss, filename_css, filesize_css));
 
+    uploadJs.addEventListener('click', triggerFileInput(fileJs));
+    deleteJs.addEventListener('click', removeSelectedFile(fileJs, filename_js, filesize_js));
 
     const total_capacity = document.getElementById('total_capacity'); 
     var total_size = 0;
