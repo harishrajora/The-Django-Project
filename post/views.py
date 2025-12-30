@@ -221,8 +221,9 @@ class PostActions():
             if post.staff_modified == False or  request.user.is_staff: # cannot modify moderated post
                 if request.method == "POST":
 
-                    if request.user.is_staff:
-                        post.staff_modified = True
+                    if post.user != request.user:
+                        if request.user.is_staff:
+                            post.staff_modified = True
 
                     action = request.POST.get("action")
 
