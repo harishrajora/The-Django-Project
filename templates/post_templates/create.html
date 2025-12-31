@@ -321,7 +321,7 @@
 
     function removeSelectedFile(fileInput, filename, filesize) {return function (e) {
         e.preventDefault();
-        fileInput.value = "";
+        fileInput.value = null;
         filename.textContent = "";
         filesize.textContent = "None | 0";
         apply_file_data(filename, filesize);
