@@ -2,7 +2,7 @@ from urllib import request
 from django.shortcuts import render, get_object_or_404, HttpResponseRedirect, redirect, Http404, HttpResponse
 from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
 from django.urls import reverse
-from .models import Post, UserUpvote, UserReport
+from .models import Post, PostImage, UserUpvote, UserReport
 from django.contrib.auth.models import User
 from .forms import PostForm, CommentForm
 from admin_panel.forms import ContactusForm
@@ -243,8 +243,17 @@ class PostActions():
                     if request.FILES.get("user_js"):
                         post.user_js = request.FILES.get("user_js")
 
-                    if request.FILES.get("image"):
-                        post.image = request.FILES.get("image")
+                    # Handle multiple images on update (append)
+                    images = request.FILES.getlist('images')
+                    if images:
+                        total_size = sum(f.size for f in images)
+                        if total_size > 10 * 1024 * 1024:
+                            messages.error(request, "File limit allowed 10 MB only")
+                            return render(request, "post_templates/create.html",{"post":post, "moderated":post.staff_modified})
+                        if not post.image and images:
+                            post.image = images[0]
+                        for f in images:
+                            PostImage.objects.create(post=post, image=f)
 
                     if request.FILES.get("video"):
                         post.video = request.FILES.get("video")
@@ -340,7 +349,8 @@ def post_create(request):
         user_css = request.FILES.get("user_css")
         user_js = request.FILES.get("user_js")
 
-        image = request.FILES.get("image")
+        images = request.FILES.getlist("images")
+        image = images[0] if images else None
         video = request.FILES.get("video")
 
         post = Post(
@@ -358,8 +368,19 @@ def post_create(request):
         if action == "publish":
             if title and desc:
                 post.save()
+                # Handle multiple uploaded images (field name: 'images')
+                images = request.FILES.getlist('images')
+                if images:
+                    total_size = sum(f.size for f in images)
+                    if total_size > 10 * 1024 * 1024:
+                        messages.error(request, "Combined File Limit Allowed 10 MB Only.")
+                        return render(request, "post_templates/create.html", {"is_creating": True})
+                    if not post.image and images:
+                        post.image = images[0]
+                        post.save()
+                    for f in images:
+                        PostImage.objects.create(post=post, image=f)
                 return HttpResponseRedirect(post.get_absolute_url())
-
         if action == "preview":
             return render(request,"post_templates/post_design_preview.html",{"post": post})
         
