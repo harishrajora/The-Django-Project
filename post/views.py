@@ -221,8 +221,9 @@ class PostActions():
             if post.staff_modified == False or  request.user.is_staff: # cannot modify moderated post
                 if request.method == "POST":
 
-                    if request.user.is_staff:
-                        post.staff_modified = True
+                    if post.user != request.user:
+                        if request.user.is_staff:
+                            post.staff_modified = True
 
                     action = request.POST.get("action")
 
@@ -231,16 +232,16 @@ class PostActions():
                     post.desc = request.POST.get("desc") or post.desc
 
                     # Update files ONLY if uploaded
-                    if request.FILES.get("site_preview"):
+                    if request.FILES.get("site_preview")  or request.FILES.get("site_preview") == None:
                         post.site_preview = request.FILES.get("site_preview")
 
-                    if request.FILES.get("user_html"):
+                    if request.FILES.get("user_html")  or request.FILES.get("user_html") == None:
                         post.user_html = request.FILES.get("user_html")
 
-                    if request.FILES.get("user_css"):
+                    if request.FILES.get("user_css")  or request.FILES.get("user_css") == None:
                         post.user_css = request.FILES.get("user_css")
 
-                    if request.FILES.get("user_js"):
+                    if request.FILES.get("user_js")  or request.FILES.get("user_js") == None:
                         post.user_js = request.FILES.get("user_js")
 
                     # Handle multiple images on update (append)
@@ -255,7 +256,7 @@ class PostActions():
                         for f in images:
                             PostImage.objects.create(post=post, image=f)
 
-                    if request.FILES.get("video"):
+                    if request.FILES.get("video")  or request.FILES.get("video") == None:
                         post.video = request.FILES.get("video")
 
                     if action == "publish":

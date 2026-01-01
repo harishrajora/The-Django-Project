@@ -62,6 +62,13 @@ cover/
 staticfiles/*
 local_settings.py
 
+media/css_uploaded/*
+media/js_uploaded/*
+media/html_uploaded/*
+media/profile_pics/*
+media/videos_uploaded/*
+media/images_uploaded/*
+
 # Flask stuff:
 instance/
 .webassets-cache
